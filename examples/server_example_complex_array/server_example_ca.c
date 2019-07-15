@@ -5,7 +5,7 @@
  */
 
 #include "iec61850_server.h"
-#include "thread.h"
+#include "hal_thread.h"
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -62,13 +62,8 @@ int main(int argc, char** argv) {
     DataObject* mhai1_ha_phsAHar = (DataObject*)
             IedModel_getModelNodeByObjectReference(&iedModel, "testComplexArray/MHAI1.HA.phsAHar");
 
-    /* alternative: only for static model */
-//    DataObject* mhai1_ha_phsAHar = IEDMODEL_ComplexArray_MHAI1_HA_phsAHar;
-
-    assert(mhai1_ha_phsAHar != NULL);
-
     /* Get access to the corresponding MMS value data structure - the MX(FC) part of the data object */
-    MmsValue* mhai1_ha_phsAHar_mx = IedServer_getFunctionalConstrainedData(iedServer, mhai1_ha_phsAHar, MX);
+    MmsValue* mhai1_ha_phsAHar_mx = IedServer_getFunctionalConstrainedData(iedServer, mhai1_ha_phsAHar, IEC61850_FC_MX);
 
 
     /* assuming the array has 16 elements */
@@ -110,6 +105,8 @@ int main(int argc, char** argv) {
 	    IedServer_lockDataModel(iedServer);
 	    for (i = 0; i < 16; i++) {
 	        updateCMVArrayElement(mhai1_ha_phsAHar_mx, i, mag, angle, quality, timestamp);
+	        mag += 0.1f;
+	        angle += 0.05f;
 	    }
 	    IedServer_unlockDataModel(iedServer);
 

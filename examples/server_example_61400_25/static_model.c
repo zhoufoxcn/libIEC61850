@@ -3,348 +3,15 @@
  *
  * automatically generated from wtur.icd
  */
-#include <stdlib.h>
-#include "model.h"
+#include "static_model.h"
 
-extern IedModel iedModel;
 static void initializeValues();
-extern LogicalDevice iedModel_WTG;
-extern LogicalNode   iedModel_WTG_LLN0;
-extern DataObject    iedModel_WTG_LLN0_Mod;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_operTm;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_T;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_Test;
-extern DataAttribute iedModel_WTG_LLN0_Mod_Oper_Check;
-extern DataAttribute iedModel_WTG_LLN0_Mod_stVal;
-extern DataAttribute iedModel_WTG_LLN0_Mod_q;
-extern DataAttribute iedModel_WTG_LLN0_Mod_t;
-extern DataAttribute iedModel_WTG_LLN0_Mod_ctlModel;
-extern DataObject    iedModel_WTG_LLN0_Beh;
-extern DataAttribute iedModel_WTG_LLN0_Beh_stVal;
-extern DataAttribute iedModel_WTG_LLN0_Beh_q;
-extern DataAttribute iedModel_WTG_LLN0_Beh_t;
-extern DataObject    iedModel_WTG_LLN0_Health;
-extern DataAttribute iedModel_WTG_LLN0_Health_stVal;
-extern DataAttribute iedModel_WTG_LLN0_Health_q;
-extern DataAttribute iedModel_WTG_LLN0_Health_t;
-extern DataObject    iedModel_WTG_LLN0_NamPlt;
-extern DataAttribute iedModel_WTG_LLN0_NamPlt_vendor;
-extern DataAttribute iedModel_WTG_LLN0_NamPlt_swRev;
-extern DataAttribute iedModel_WTG_LLN0_NamPlt_configRev;
-extern LogicalNode   iedModel_WTG_LPHD1;
-extern DataObject    iedModel_WTG_LPHD1_NamPlt;
-extern DataAttribute iedModel_WTG_LPHD1_NamPlt_vendor;
-extern DataAttribute iedModel_WTG_LPHD1_NamPlt_swRev;
-extern DataAttribute iedModel_WTG_LPHD1_NamPlt_configRev;
-extern DataObject    iedModel_WTG_LPHD1_PhyNam;
-extern DataAttribute iedModel_WTG_LPHD1_PhyNam_vendor;
-extern DataAttribute iedModel_WTG_LPHD1_PhyNam_hwRev;
-extern DataAttribute iedModel_WTG_LPHD1_PhyNam_swRev;
-extern DataAttribute iedModel_WTG_LPHD1_PhyNam_serNum;
-extern DataAttribute iedModel_WTG_LPHD1_PhyNam_model;
-extern DataObject    iedModel_WTG_LPHD1_PhyHealth;
-extern DataAttribute iedModel_WTG_LPHD1_PhyHealth_stVal;
-extern DataAttribute iedModel_WTG_LPHD1_PhyHealth_q;
-extern DataAttribute iedModel_WTG_LPHD1_PhyHealth_t;
-extern DataObject    iedModel_WTG_LPHD1_Proxy;
-extern DataAttribute iedModel_WTG_LPHD1_Proxy_stVal;
-extern DataAttribute iedModel_WTG_LPHD1_Proxy_q;
-extern DataAttribute iedModel_WTG_LPHD1_Proxy_t;
-extern LogicalNode   iedModel_WTG_WTUR1;
-extern DataObject    iedModel_WTG_WTUR1_NamPlt;
-extern DataAttribute iedModel_WTG_WTUR1_NamPlt_vendor;
-extern DataAttribute iedModel_WTG_WTUR1_NamPlt_swRev;
-extern DataAttribute iedModel_WTG_WTUR1_NamPlt_configRev;
-extern DataObject    iedModel_WTG_WTUR1_TotWh;
-extern DataObject    iedModel_WTG_WTUR1_TotWh_manRs;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_ctlModel;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_sboTimeout;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_sboClass;
-extern DataObject    iedModel_WTG_WTUR1_TotWh_hisRs;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_TotWh_actCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_t;
-extern DataObject    iedModel_WTG_WTUR1_TotWh_oldCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_t;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_ctTot;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_dly;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_mly;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_yly;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_tot;
-extern DataAttribute iedModel_WTG_WTUR1_TotWh_rsPer;
-extern DataObject    iedModel_WTG_WTUR1_TurSt;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_actSt;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_t;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_oldSt;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_t;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stTm;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stTm_manRs;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_ctlModel;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboTimeout;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboClass;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stTm_hisRs;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stTm_actTmVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_t;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_tmTot;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_dly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_mly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_yly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_tot;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_rsPer;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stCt;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stCt_manRs;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_ctlModel;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboTimeout;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboClass;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stCt_hisRs;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stCt_actCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_t;
-extern DataObject    iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_t;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_ctTot;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_dly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_mly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_yly;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_tot;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_rsPer;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_preTmms;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_pstTmms;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_smpTmms;
-extern DataAttribute iedModel_WTG_WTUR1_TurSt_datSetMx;
-extern DataObject    iedModel_WTG_WTUR1_W;
-extern DataAttribute iedModel_WTG_WTUR1_W_instMag;
-extern DataAttribute iedModel_WTG_WTUR1_W_instMag_i;
-extern DataAttribute iedModel_WTG_WTUR1_W_instMag_f;
-extern DataAttribute iedModel_WTG_WTUR1_W_mag;
-extern DataAttribute iedModel_WTG_WTUR1_W_mag_i;
-extern DataAttribute iedModel_WTG_WTUR1_W_mag_f;
-extern DataAttribute iedModel_WTG_WTUR1_W_q;
-extern DataAttribute iedModel_WTG_WTUR1_W_t;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_actSt;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_oldSt;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_t;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmTm;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_ctlModel;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboTimeout;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboClass;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_t;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_tmTot;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_dly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_mly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_yly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_tot;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_rsPer;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmCt;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_ctlModel;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboTimeout;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboClass;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_operTm;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orCat;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orIdent;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlNum;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_T;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Test;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Check;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_ctlModel;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_t;
-extern DataObject    iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_stVal;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_q;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_t;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_ctTot;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_dly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_mly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_yly;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_tot;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_rsPer;
-extern DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmAcs;
 
 
 
 LogicalDevice iedModel_WTG = {
     LogicalDeviceModelType,
-    "WINDWTG",
+    "WTG",
     (ModelNode*) &iedModel,
     NULL,
     (ModelNode*) &iedModel_WTG_LLN0
@@ -374,8 +41,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_stVal,
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -387,8 +54,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -400,8 +67,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -413,8 +80,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -426,8 +93,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -439,8 +106,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -452,8 +119,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -465,8 +132,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_T = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -478,8 +145,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_Test = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -491,8 +158,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -504,8 +171,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_stVal = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -517,8 +184,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_q = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -530,8 +197,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_t = {
     (ModelNode*) &iedModel_WTG_LLN0_Mod_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -543,8 +210,8 @@ DataAttribute iedModel_WTG_LLN0_Mod_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -565,8 +232,8 @@ DataAttribute iedModel_WTG_LLN0_Beh_stVal = {
     (ModelNode*) &iedModel_WTG_LLN0_Beh_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -578,8 +245,8 @@ DataAttribute iedModel_WTG_LLN0_Beh_q = {
     (ModelNode*) &iedModel_WTG_LLN0_Beh_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -591,8 +258,8 @@ DataAttribute iedModel_WTG_LLN0_Beh_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -613,8 +280,8 @@ DataAttribute iedModel_WTG_LLN0_Health_stVal = {
     (ModelNode*) &iedModel_WTG_LLN0_Health_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -626,8 +293,8 @@ DataAttribute iedModel_WTG_LLN0_Health_q = {
     (ModelNode*) &iedModel_WTG_LLN0_Health_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -639,8 +306,8 @@ DataAttribute iedModel_WTG_LLN0_Health_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -661,8 +328,8 @@ DataAttribute iedModel_WTG_LLN0_NamPlt_vendor = {
     (ModelNode*) &iedModel_WTG_LLN0_NamPlt_swRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -674,8 +341,8 @@ DataAttribute iedModel_WTG_LLN0_NamPlt_swRev = {
     (ModelNode*) &iedModel_WTG_LLN0_NamPlt_configRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -687,8 +354,8 @@ DataAttribute iedModel_WTG_LLN0_NamPlt_configRev = {
     NULL,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -717,8 +384,8 @@ DataAttribute iedModel_WTG_LPHD1_NamPlt_vendor = {
     (ModelNode*) &iedModel_WTG_LPHD1_NamPlt_swRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -730,8 +397,8 @@ DataAttribute iedModel_WTG_LPHD1_NamPlt_swRev = {
     (ModelNode*) &iedModel_WTG_LPHD1_NamPlt_configRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -743,8 +410,8 @@ DataAttribute iedModel_WTG_LPHD1_NamPlt_configRev = {
     NULL,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -765,8 +432,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyNam_vendor = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyNam_hwRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -778,8 +445,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyNam_hwRev = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyNam_swRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -791,8 +458,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyNam_swRev = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyNam_serNum,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -804,8 +471,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyNam_serNum = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyNam_model,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -817,8 +484,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyNam_model = {
     NULL,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -839,8 +506,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyHealth_stVal = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyHealth_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -852,8 +519,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyHealth_q = {
     (ModelNode*) &iedModel_WTG_LPHD1_PhyHealth_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -865,8 +532,8 @@ DataAttribute iedModel_WTG_LPHD1_PhyHealth_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -887,8 +554,8 @@ DataAttribute iedModel_WTG_LPHD1_Proxy_stVal = {
     (ModelNode*) &iedModel_WTG_LPHD1_Proxy_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -900,8 +567,8 @@ DataAttribute iedModel_WTG_LPHD1_Proxy_q = {
     (ModelNode*) &iedModel_WTG_LPHD1_Proxy_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -913,8 +580,8 @@ DataAttribute iedModel_WTG_LPHD1_Proxy_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -943,8 +610,8 @@ DataAttribute iedModel_WTG_WTUR1_NamPlt_vendor = {
     (ModelNode*) &iedModel_WTG_WTUR1_NamPlt_swRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -956,8 +623,8 @@ DataAttribute iedModel_WTG_WTUR1_NamPlt_swRev = {
     (ModelNode*) &iedModel_WTG_WTUR1_NamPlt_configRev,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -969,8 +636,8 @@ DataAttribute iedModel_WTG_WTUR1_NamPlt_configRev = {
     NULL,
     NULL,
     0,
-    DC,
-    VISIBLE_STRING_255,
+    IEC61850_FC_DC,
+    IEC61850_VISIBLE_STRING_255,
     0,
     NULL,
     0};
@@ -1000,8 +667,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1013,8 +680,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -1026,8 +693,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1039,8 +706,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1052,8 +719,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1065,8 +732,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -1078,8 +745,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -1091,8 +758,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1104,8 +771,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -1117,8 +784,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -1130,8 +797,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1143,8 +810,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1156,8 +823,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1169,8 +836,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_ctlModel = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_sboTimeout,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1182,8 +849,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_sboTimeout = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_manRs_sboClass,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1195,8 +862,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_manRs_sboClass = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1217,8 +884,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1230,8 +897,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -1243,8 +910,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1256,8 +923,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1269,8 +936,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1282,8 +949,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -1295,8 +962,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -1308,8 +975,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1321,8 +988,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -1334,8 +1001,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -1347,8 +1014,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1360,8 +1027,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1373,8 +1040,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_hisRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1386,8 +1053,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_hisRs_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1408,8 +1075,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_actCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1421,8 +1088,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_actCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1434,8 +1101,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_actCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1456,8 +1123,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_oldCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1469,8 +1136,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_oldCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1482,8 +1149,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_oldCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1495,8 +1162,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_ctTot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_dly,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1508,8 +1175,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_dly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_mly,
     NULL,
     32,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1521,8 +1188,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_mly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_yly,
     NULL,
     13,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1534,8 +1201,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_yly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_tot,
     NULL,
     21,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1547,8 +1214,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_tot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TotWh_rsPer,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1560,8 +1227,8 @@ DataAttribute iedModel_WTG_WTUR1_TotWh_rsPer = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1591,8 +1258,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_actSt_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1604,8 +1271,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_actSt_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1617,8 +1284,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_actSt_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1639,8 +1306,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_oldSt_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1652,8 +1319,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_oldSt_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1665,8 +1332,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_oldSt_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1696,8 +1363,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1709,8 +1376,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -1722,8 +1389,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1735,8 +1402,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1748,8 +1415,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1761,8 +1428,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -1774,8 +1441,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -1787,8 +1454,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1800,8 +1467,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -1813,8 +1480,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -1826,8 +1493,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -1839,8 +1506,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -1852,8 +1519,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1865,8 +1532,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_ctlModel = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboTimeout,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1878,8 +1545,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboTimeout = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboClass,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -1891,8 +1558,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_manRs_sboClass = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1913,8 +1580,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1926,8 +1593,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -1939,8 +1606,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -1952,8 +1619,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -1965,8 +1632,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -1978,8 +1645,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -1991,8 +1658,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -2004,8 +1671,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2017,8 +1684,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -2030,8 +1697,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -2043,8 +1710,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2056,8 +1723,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2069,8 +1736,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_hisRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2082,8 +1749,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_hisRs_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2104,8 +1771,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2117,8 +1784,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2130,8 +1797,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_actTmVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2152,8 +1819,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2165,8 +1832,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2178,8 +1845,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_oldTmVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2191,8 +1858,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_tmTot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_dly,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2204,8 +1871,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_dly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_mly,
     NULL,
     32,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2217,8 +1884,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_mly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_yly,
     NULL,
     13,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2230,8 +1897,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_yly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_tot,
     NULL,
     21,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2243,8 +1910,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_tot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stTm_rsPer,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2256,8 +1923,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stTm_rsPer = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2287,8 +1954,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -2300,8 +1967,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -2313,8 +1980,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2326,8 +1993,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -2339,8 +2006,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2352,8 +2019,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -2365,8 +2032,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -2378,8 +2045,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2391,8 +2058,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -2404,8 +2071,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -2417,8 +2084,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2430,8 +2097,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2443,8 +2110,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2456,8 +2123,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_ctlModel = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboTimeout,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2469,8 +2136,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboTimeout = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboClass,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2482,8 +2149,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_manRs_sboClass = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2504,8 +2171,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -2517,8 +2184,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -2530,8 +2197,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2543,8 +2210,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -2556,8 +2223,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2569,8 +2236,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -2582,8 +2249,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -2595,8 +2262,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2608,8 +2275,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -2621,8 +2288,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -2634,8 +2301,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2647,8 +2314,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2660,8 +2327,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_hisRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2673,8 +2340,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_hisRs_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2695,8 +2362,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2708,8 +2375,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2721,8 +2388,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_actCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2743,8 +2410,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2756,8 +2423,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -2769,8 +2436,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_oldCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -2782,8 +2449,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_ctTot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_dly,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2795,8 +2462,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_dly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_mly,
     NULL,
     32,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2808,8 +2475,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_mly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_yly,
     NULL,
     13,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2821,8 +2488,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_yly = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_tot,
     NULL,
     21,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2834,8 +2501,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_tot = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_stCt_rsPer,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2847,8 +2514,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_stCt_rsPer = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -2860,8 +2527,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_preTmms = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_pstTmms,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2873,8 +2540,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_pstTmms = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_smpTmms,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -2886,8 +2553,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_smpTmms = {
     (ModelNode*) &iedModel_WTG_WTUR1_TurSt_datSetMx,
     NULL,
     0,
-    CF,
-    INT16U,
+    IEC61850_FC_CF,
+    IEC61850_INT16U,
     0,
     NULL,
     0};
@@ -2899,8 +2566,8 @@ DataAttribute iedModel_WTG_WTUR1_TurSt_datSetMx = {
     NULL,
     NULL,
     0,
-    CF,
-    VISIBLE_STRING_129,
+    IEC61850_FC_CF,
+    IEC61850_VISIBLE_STRING_129,
     0,
     NULL,
     0};
@@ -2921,8 +2588,8 @@ DataAttribute iedModel_WTG_WTUR1_W_instMag = {
     (ModelNode*) &iedModel_WTG_WTUR1_W_mag,
     (ModelNode*) &iedModel_WTG_WTUR1_W_instMag_i,
     0,
-    MX,
-    CONSTRUCTED,
+    IEC61850_FC_MX,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -2934,8 +2601,8 @@ DataAttribute iedModel_WTG_WTUR1_W_instMag_i = {
     (ModelNode*) &iedModel_WTG_WTUR1_W_instMag_f,
     NULL,
     0,
-    MX,
-    INT32,
+    IEC61850_FC_MX,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -2947,8 +2614,8 @@ DataAttribute iedModel_WTG_WTUR1_W_instMag_f = {
     NULL,
     NULL,
     0,
-    MX,
-    FLOAT32,
+    IEC61850_FC_MX,
+    IEC61850_FLOAT32,
     0,
     NULL,
     0};
@@ -2960,8 +2627,8 @@ DataAttribute iedModel_WTG_WTUR1_W_mag = {
     (ModelNode*) &iedModel_WTG_WTUR1_W_q,
     (ModelNode*) &iedModel_WTG_WTUR1_W_mag_i,
     0,
-    MX,
-    CONSTRUCTED,
+    IEC61850_FC_MX,
+    IEC61850_CONSTRUCTED,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2973,8 +2640,8 @@ DataAttribute iedModel_WTG_WTUR1_W_mag_i = {
     (ModelNode*) &iedModel_WTG_WTUR1_W_mag_f,
     NULL,
     0,
-    MX,
-    INT32,
+    IEC61850_FC_MX,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2986,8 +2653,8 @@ DataAttribute iedModel_WTG_WTUR1_W_mag_f = {
     NULL,
     NULL,
     0,
-    MX,
-    FLOAT32,
+    IEC61850_FC_MX,
+    IEC61850_FLOAT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -2999,8 +2666,8 @@ DataAttribute iedModel_WTG_WTUR1_W_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_W_t,
     NULL,
     0,
-    MX,
-    QUALITY,
+    IEC61850_FC_MX,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3012,8 +2679,8 @@ DataAttribute iedModel_WTG_WTUR1_W_t = {
     NULL,
     NULL,
     0,
-    MX,
-    TIMESTAMP,
+    IEC61850_FC_MX,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3043,8 +2710,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3056,8 +2723,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -3069,8 +2736,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3082,8 +2749,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3095,8 +2762,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3108,8 +2775,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -3121,8 +2788,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -3134,8 +2801,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3147,8 +2814,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3160,8 +2827,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -3173,8 +2840,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3186,8 +2853,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3199,8 +2866,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_actSt_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3212,8 +2879,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_actSt_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3234,8 +2901,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_oldSt_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3247,8 +2914,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_oldSt_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3260,8 +2927,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_oldSt_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3291,8 +2958,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3304,8 +2971,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3317,8 +2984,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3330,8 +2997,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3343,8 +3010,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3356,8 +3023,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -3369,8 +3036,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -3382,8 +3049,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3395,8 +3062,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3408,8 +3075,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -3421,8 +3088,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3434,8 +3101,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3447,8 +3114,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3460,8 +3127,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_ctlModel = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboTimeout,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3473,8 +3140,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboTimeout = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboClass,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3486,8 +3153,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_manRs_sboClass = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3508,8 +3175,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3521,8 +3188,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -3534,8 +3201,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3547,8 +3214,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3560,8 +3227,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3573,8 +3240,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -3586,8 +3253,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -3599,8 +3266,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3612,8 +3279,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3625,8 +3292,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -3638,8 +3305,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3651,8 +3318,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3664,8 +3331,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3677,8 +3344,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_hisRs_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3699,8 +3366,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3712,8 +3379,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3725,8 +3392,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_actTmVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3747,8 +3414,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -3760,8 +3427,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -3773,8 +3440,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_oldTmVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3786,8 +3453,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_tmTot = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_dly,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3799,8 +3466,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_dly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_mly,
     NULL,
     32,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3812,8 +3479,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_mly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_yly,
     NULL,
     13,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3825,8 +3492,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_yly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_tot,
     NULL,
     21,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3838,8 +3505,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_tot = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmTm_rsPer,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -3851,8 +3518,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmTm_rsPer = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3882,8 +3549,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3895,8 +3562,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3908,8 +3575,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3921,8 +3588,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -3934,8 +3601,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -3947,8 +3614,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -3960,8 +3627,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -3973,8 +3640,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -3986,8 +3653,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -3999,8 +3666,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -4012,8 +3679,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_q,
     NULL,
     0,
-    ST,
-    BOOLEAN,
+    IEC61850_FC_ST,
+    IEC61850_BOOLEAN,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -4025,8 +3692,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -4038,8 +3705,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4051,8 +3718,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_ctlModel = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboTimeout,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -4064,8 +3731,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboTimeout = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboClass,
     NULL,
     0,
-    CF,
-    INT32U,
+    IEC61850_FC_CF,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4077,8 +3744,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_manRs_sboClass = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -4099,8 +3766,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_stVal,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlVal,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -4112,8 +3779,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_operTm,
     NULL,
     0,
-    CO,
-    INT32,
+    IEC61850_FC_CO,
+    IEC61850_INT32,
     0,
     NULL,
     0};
@@ -4125,8 +3792,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_operTm = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4138,8 +3805,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlNum,
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orCat,
     0,
-    CO,
-    CONSTRUCTED,
+    IEC61850_FC_CO,
+    IEC61850_CONSTRUCTED,
     0,
     NULL,
     0};
@@ -4151,8 +3818,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orCat = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orIdent,
     NULL,
     0,
-    CO,
-    ENUMERATED,
+    IEC61850_FC_CO,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -4164,8 +3831,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_origin_orIdent = {
     NULL,
     NULL,
     0,
-    CO,
-    OCTET_STRING_64,
+    IEC61850_FC_CO,
+    IEC61850_OCTET_STRING_64,
     0,
     NULL,
     0};
@@ -4177,8 +3844,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_ctlNum = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_T,
     NULL,
     0,
-    CO,
-    INT8U,
+    IEC61850_FC_CO,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
@@ -4190,8 +3857,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_T = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Test,
     NULL,
     0,
-    CO,
-    TIMESTAMP,
+    IEC61850_FC_CO,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4203,8 +3870,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Test = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Check,
     NULL,
     0,
-    CO,
-    BOOLEAN,
+    IEC61850_FC_CO,
+    IEC61850_BOOLEAN,
     0,
     NULL,
     0};
@@ -4216,8 +3883,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_Oper_Check = {
     NULL,
     NULL,
     0,
-    CO,
-    CHECK,
+    IEC61850_FC_CO,
+    IEC61850_CHECK,
     0,
     NULL,
     0};
@@ -4229,8 +3896,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -4242,8 +3909,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -4255,8 +3922,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_t = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_ctlModel,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4268,8 +3935,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_hisRs_ctlModel = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -4290,8 +3957,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -4303,8 +3970,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -4316,8 +3983,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_actCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4338,8 +4005,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_stVal = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_q,
     NULL,
     0,
-    ST,
-    INT32,
+    IEC61850_FC_ST,
+    IEC61850_INT32,
     0 + TRG_OPT_DATA_CHANGED,
     NULL,
     0};
@@ -4351,8 +4018,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_q = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_t,
     NULL,
     0,
-    ST,
-    QUALITY,
+    IEC61850_FC_ST,
+    IEC61850_QUALITY,
     0 + TRG_OPT_QUALITY_CHANGED,
     NULL,
     0};
@@ -4364,8 +4031,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_oldCtVal_t = {
     NULL,
     NULL,
     0,
-    ST,
-    TIMESTAMP,
+    IEC61850_FC_ST,
+    IEC61850_TIMESTAMP,
     0,
     NULL,
     0};
@@ -4377,8 +4044,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_ctTot = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_dly,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4390,8 +4057,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_dly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_mly,
     NULL,
     32,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4403,8 +4070,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_mly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_yly,
     NULL,
     13,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4416,8 +4083,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_yly = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_tot,
     NULL,
     21,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4429,8 +4096,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_tot = {
     (ModelNode*) &iedModel_WTG_WTUR1_SetTurOp_cmCt_rsPer,
     NULL,
     0,
-    ST,
-    INT32U,
+    IEC61850_FC_ST,
+    IEC61850_INT32U,
     0,
     NULL,
     0};
@@ -4442,8 +4109,8 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmCt_rsPer = {
     NULL,
     NULL,
     0,
-    CF,
-    ENUMERATED,
+    IEC61850_FC_CF,
+    IEC61850_ENUMERATED,
     0,
     NULL,
     0};
@@ -4455,18 +4122,11 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmAcs = {
     NULL,
     NULL,
     0,
-    CF,
-    INT8U,
+    IEC61850_FC_CF,
+    IEC61850_INT8U,
     0,
     NULL,
     0};
-
-
-
-
-
-
-
 
 
 
@@ -4479,6 +4139,10 @@ DataAttribute iedModel_WTG_WTUR1_SetTurOp_cmAcs = {
 IedModel iedModel = {
     "WIND",
     &iedModel_WTG,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,

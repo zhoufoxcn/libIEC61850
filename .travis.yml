@@ -1,9 +1,25 @@
 language: c
+
 compiler:
-  - gcc
   - clang
-# Change this to your needs
-# script: ./configure && make
-script: 
+  - gcc
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - swig
+    - libsqlite3-dev
+    - python-dev
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      brew update;
+      brew install swig python sqlite;
+    fi
+  - mkdir -p build && cd build
+
+script:
+  - cmake .. -DBUILD_PYTHON_BINDINGS=ON
   - make
-  - make examples
+  - make test

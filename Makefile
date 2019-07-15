@@ -12,61 +12,71 @@ LIB_SOURCE_DIRS += src/mms/asn1
 LIB_SOURCE_DIRS += src/mms/iso_cotp
 LIB_SOURCE_DIRS += src/mms/iso_mms/server
 LIB_SOURCE_DIRS += src/mms/iso_mms/client
-LIB_SOURCE_DIRS += src/mms/iso_client/impl
+LIB_SOURCE_DIRS += src/mms/iso_client
 LIB_SOURCE_DIRS += src/mms/iso_common
 LIB_SOURCE_DIRS += src/mms/iso_mms/common
 LIB_SOURCE_DIRS += src/mms/iso_mms/asn1c
 LIB_SOURCE_DIRS += src/mms/iso_server
+
+LIB_SOURCE_DIRS += src/logging
+
 ifndef EXCLUDE_ETHERNET_WINDOWS
 LIB_SOURCE_DIRS += src/goose
+LIB_SOURCE_DIRS += src/sampled_values
 endif
-LIB_SOURCE_DIRS += src/iedclient/impl
-LIB_SOURCE_DIRS += src/iedcommon
-LIB_SOURCE_DIRS += src/iedserver
-LIB_SOURCE_DIRS += src/iedserver/model
-LIB_SOURCE_DIRS += src/iedserver/mms_mapping
-LIB_SOURCE_DIRS += src/iedserver/impl
-LIB_SOURCE_DIRS += src/hal
+LIB_SOURCE_DIRS += src/iec61850/client
+LIB_SOURCE_DIRS += src/iec61850/common
+LIB_SOURCE_DIRS += src/iec61850/server
+LIB_SOURCE_DIRS += src/iec61850/server/model
+LIB_SOURCE_DIRS += src/iec61850/server/mms_mapping
+LIB_SOURCE_DIRS += src/iec61850/server/impl
 ifeq ($(HAL_IMPL), WIN32)
-LIB_SOURCE_DIRS += src/hal/socket/win32
-LIB_SOURCE_DIRS += src/hal/thread/win32
-LIB_SOURCE_DIRS += src/hal/ethernet/win32
-LIB_SOURCE_DIRS += src/hal/filesystem/win32
+LIB_SOURCE_DIRS += hal/socket/win32
+LIB_SOURCE_DIRS += hal/thread/win32
+LIB_SOURCE_DIRS += hal/ethernet/win32
+LIB_SOURCE_DIRS += hal/filesystem/win32
+LIB_SOURCE_DIRS += hal/time/win32
+LIB_SOURCE_DIRS += hal/serial/win32
+LIB_SOURCE_DIRS += hal/memory
 else ifeq ($(HAL_IMPL), POSIX)
-LIB_SOURCE_DIRS += src/hal/socket/linux
-LIB_SOURCE_DIRS += src/hal/thread/linux
-LIB_SOURCE_DIRS += src/hal/ethernet/linux
-LIB_SOURCE_DIRS += src/hal/filesystem/linux
+LIB_SOURCE_DIRS += hal/socket/linux
+LIB_SOURCE_DIRS += hal/thread/linux
+LIB_SOURCE_DIRS += hal/ethernet/linux
+LIB_SOURCE_DIRS += hal/filesystem/linux
+LIB_SOURCE_DIRS += hal/time/unix
+LIB_SOURCE_DIRS += hal/serial/linux
+LIB_SOURCE_DIRS += hal/memory
+else ifeq ($(HAL_IMPL), BSD)
+LIB_SOURCE_DIRS += hal/socket/bsd
+LIB_SOURCE_DIRS += hal/thread/bsd
+LIB_SOURCE_DIRS += hal/ethernet/bsd
+LIB_SOURCE_DIRS += hal/filesystem/linux
+LIB_SOURCE_DIRS += hal/time/unix
+LIB_SOURCE_DIRS += hal/memory
 endif
-
-LIB_INCLUDE_DIRS +=	src/mms/iso_presentation
-LIB_INCLUDE_DIRS +=	src/mms/iso_session
-LIB_INCLUDE_DIRS +=	src/mms/iso_cotp
-LIB_INCLUDE_DIRS +=	src/mms/iso_acse
-LIB_INCLUDE_DIRS +=	config
-LIB_INCLUDE_DIRS += src/mms/asn1
-LIB_INCLUDE_DIRS += src/mms/iso_client
-LIB_INCLUDE_DIRS +=	src/mms/iso_mms/server
-LIB_INCLUDE_DIRS +=	src/mms/iso_mms/common
-LIB_INCLUDE_DIRS += src/mms/iso_mms/client
-LIB_INCLUDE_DIRS +=	src/mms/iso_mms/asn1c
-LIB_INCLUDE_DIRS +=	src/common
-LIB_INCLUDE_DIRS +=	src/hal/socket
-LIB_INCLUDE_DIRS +=	src/hal/thread
-LIB_INCLUDE_DIRS +=	src/hal/ethernet
-LIB_INCLUDE_DIRS +=	src/hal/filesystem
-LIB_INCLUDE_DIRS +=	src/hal
-LIB_INCLUDE_DIRS +=	src/goose
-LIB_INCLUDE_DIRS +=	src/mms/iso_server
-LIB_INCLUDE_DIRS +=	src/mms/iso_common
-LIB_INCLUDE_DIRS += src/iedclient
-LIB_INCLUDE_DIRS += src/iedcommon
-LIB_INCLUDE_DIRS += src/iedserver
-LIB_INCLUDE_DIRS += src/iedserver/model
-LIB_INCLUDE_DIRS += src/iedserver/mms_mapping
-LIB_INCLUDE_DIRS += src/iedserver/impl
+LIB_INCLUDE_DIRS += config
+LIB_INCLUDE_DIRS += hal/inc
+LIB_INCLUDE_DIRS += src/common/inc
+LIB_INCLUDE_DIRS += src/mms/iso_mms/asn1c
+LIB_INCLUDE_DIRS += src/mms/inc
+LIB_INCLUDE_DIRS += src/mms/inc_private
+LIB_INCLUDE_DIRS += src/goose
+LIB_INCLUDE_DIRS += src/sampled_values
+LIB_INCLUDE_DIRS += src/iec61850/inc
+LIB_INCLUDE_DIRS += src/iec61850/inc_private
+LIB_INCLUDE_DIRS += src/logging
+LIB_INCLUDE_DIRS += src/tls
 ifeq ($(HAL_IMPL), WIN32)
 LIB_INCLUDE_DIRS += third_party/winpcap/Include
+endif
+
+ifdef WITH_MBEDTLS
+LIB_SOURCE_DIRS += third_party/mbedtls/mbedtls-2.6.0/library
+LIB_SOURCE_DIRS += hal/tls/mbedtls
+LIB_INCLUDE_DIRS += third_party/mbedtls/mbedtls-2.6.0/include
+LIB_INCLUDE_DIRS += hal/tls/mbedtls
+CFLAGS += -D'MBEDTLS_CONFIG_FILE="mbedtls_config.h"'
+CFLAGS += -D'CONFIG_MMS_SUPPORT_TLS=1'
 endif
 
 LIB_INCLUDES = $(addprefix -I,$(LIB_INCLUDE_DIRS))
@@ -75,35 +85,39 @@ ifndef INSTALL_PREFIX
 INSTALL_PREFIX = ./.install
 endif
 
-LIB_API_HEADER_FILES = src/hal/hal.h 
-LIB_API_HEADER_FILES += src/hal/ethernet/ethernet.h 
-LIB_API_HEADER_FILES += src/hal/thread/thread.h
-LIB_API_HEADER_FILES += src/hal/filesystem/filesystem.h 
-LIB_API_HEADER_FILES += src/common/libiec61850_common_api.h
-LIB_API_HEADER_FILES += src/common/linked_list.h
-LIB_API_HEADER_FILES += src/common/byte_buffer.h
-LIB_API_HEADER_FILES += src/iedclient/iec61850_client.h
-LIB_API_HEADER_FILES += src/iedcommon/iec61850_common.h
-LIB_API_HEADER_FILES += src/iedserver/iec61850_server.h
-LIB_API_HEADER_FILES += src/iedserver/model/model.h
-LIB_API_HEADER_FILES += src/iedserver/model/cdc.h
-LIB_API_HEADER_FILES += src/iedserver/model/dynamic_model.h
-LIB_API_HEADER_FILES += src/iedserver/model/config_file_parser.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/common/mms_value.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/common/mms_common.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/common/mms_types.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/server/mms_device_model.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/server/mms_server.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/server/mms_named_variable_list.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/common/mms_type_spec.h
-LIB_API_HEADER_FILES += src/mms/asn1/ber_integer.h
-LIB_API_HEADER_FILES += src/mms/asn1/asn1_ber_primitive_value.h
-LIB_API_HEADER_FILES += src/mms/iso_server/iso_server.h
-LIB_API_HEADER_FILES += src/mms/iso_common/iso_connection_parameters.h
+LIB_API_HEADER_FILES = hal/inc/hal_time.h 
+LIB_API_HEADER_FILES += hal/inc/hal_thread.h
+LIB_API_HEADER_FILES += hal/inc/hal_filesystem.h
+LIB_API_HEADER_FILES += hal/inc/tls_config.h
+LIB_API_HEADER_FILES += hal/inc/lib_memory.h
+LIB_API_HEADER_FILES += src/common/inc/libiec61850_common_api.h
+LIB_API_HEADER_FILES += src/common/inc/linked_list.h
+LIB_API_HEADER_FILES += src/common/inc/byte_buffer.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_client.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_common.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_server.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_model.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_cdc.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_dynamic_model.h
+LIB_API_HEADER_FILES += src/iec61850/inc/iec61850_config_file_parser.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_value.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_common.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_types.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_device_model.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_server.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_named_variable_list.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_type_spec.h
+LIB_API_HEADER_FILES += src/mms/inc/mms_client_connection.h
+LIB_API_HEADER_FILES += src/mms/inc/iso_connection_parameters.h
+LIB_API_HEADER_FILES += src/mms/inc/iso_server.h
+LIB_API_HEADER_FILES += src/mms/inc/ber_integer.h
+LIB_API_HEADER_FILES += src/mms/inc/asn1_ber_primitive_value.h
 LIB_API_HEADER_FILES += src/goose/goose_subscriber.h
-LIB_API_HEADER_FILES += src/mms/iso_mms/client/mms_client_connection.h
-LIB_API_HEADER_FILES += src/mms/iso_client/iso_client_connection.h
-LIB_API_HEADER_FILES += src/hal/socket/socket.h 
+LIB_API_HEADER_FILES += src/goose/goose_receiver.h
+LIB_API_HEADER_FILES += src/goose/goose_publisher.h
+LIB_API_HEADER_FILES += src/sampled_values/sv_subscriber.h
+LIB_API_HEADER_FILES += src/sampled_values/sv_publisher.h
+LIB_API_HEADER_FILES += src/logging/logging_api.h
 
 get_sources_from_directory  = $(wildcard $1/*.c)
 get_sources = $(foreach dir, $1, $(call get_sources_from_directory,$(dir)))
@@ -114,16 +128,20 @@ LIB_SOURCES = $(call get_sources,$(LIB_SOURCE_DIRS))
 LIB_OBJS = $(call src_to,.o,$(LIB_SOURCES))
 
 CFLAGS += -std=gnu99
-#CFLAGS += -Wno-error=format 
-CFLAGS += -Wstrict-prototypes 
-CFLAGS += -Wuninitialized 
-CFLAGS += -Wsign-compare 
-CFLAGS += -Wpointer-arith 
-CFLAGS += -Wnested-externs 
-CFLAGS += -Wmissing-declarations 
+#CFLAGS += -Wno-error=format
+CFLAGS += -Wstrict-prototypes
+
+ifneq ($(HAL_IMPL), WIN32)
+CFLAGS += -Wuninitialized
+endif
+
+CFLAGS += -Wsign-compare
+CFLAGS += -Wpointer-arith
+CFLAGS += -Wnested-externs
+CFLAGS += -Wmissing-declarations
 CFLAGS += -Wshadow
 CFLAGS += -Wall
-#CFLAGS += -Werror  
+#CFLAGS += -Werror
 
 all:	lib
 

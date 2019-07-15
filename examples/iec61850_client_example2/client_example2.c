@@ -25,6 +25,8 @@ printDataDirectory(char* doRef, IedConnection con, int spaces)
 
     LinkedList dataAttributes = IedConnection_getDataDirectory(con, &error, doRef);
 
+    //LinkedList dataAttributes = IedConnection_getDataDirectoryByFC(con, &error, doRef, MX);
+
     if (dataAttributes != NULL) {
         LinkedList dataAttribute = LinkedList_getNext(dataAttributes);
 
@@ -40,8 +42,9 @@ printDataDirectory(char* doRef, IedConnection con, int spaces)
             sprintf(daRef, "%s.%s", doRef, daName);
             printDataDirectory(daRef, con, spaces + 2);
         }
-
     }
+
+    LinkedList_destroy(dataAttributes);
 }
 
 int
@@ -70,7 +73,10 @@ main(int argc, char** argv)
         printf("Get logical device list...\n");
         LinkedList deviceList = IedConnection_getLogicalDeviceList(con, &error);
 
-        printf("error: %i\n", error);
+        if (error != IED_ERROR_OK) {
+            printf("Failed to read device list (error code: %i)\n", error);
+            goto cleanup_and_exit;
+        }
 
         LinkedList device = LinkedList_getNext(deviceList);
 
@@ -110,15 +116,19 @@ main(int argc, char** argv)
 
                 LinkedList_destroy(dataObjects);
 
+                printf("IedConnection_getLogicalNodeDirectory(%s)\n", lnRef);
                 LinkedList dataSets = IedConnection_getLogicalNodeDirectory(con, &error, lnRef,
                         ACSI_CLASS_DATA_SET);
+
+                if (error != IED_ERROR_OK)
+                    printf("get logical node data sets --> error: %i\n", error);
 
                 LinkedList dataSet = LinkedList_getNext(dataSets);
 
                 while (dataSet != NULL) {
                     char* dataSetName = (char*) dataSet->data;
                     bool isDeletable;
-                    char dataSetRef[129];
+                    char dataSetRef[130];
                     sprintf(dataSetRef, "%s.%s", lnRef, dataSetName);
 
                     LinkedList dataSetMembers = IedConnection_getDataSetDirectory(con, &error, dataSetRef,
@@ -139,6 +149,8 @@ main(int argc, char** argv)
 
                         dataSetMemberRef = LinkedList_getNext(dataSetMemberRef);
                     }
+
+                    LinkedList_destroy(dataSetMembers);
 
                     dataSet = LinkedList_getNext(dataSet);
                 }
@@ -185,12 +197,13 @@ main(int argc, char** argv)
 
         LinkedList_destroy(deviceList);
 
-        IedConnection_close(con);
+        IedConnection_abort(con, &error);
     }
     else {
         printf("Connection failed!\n");
     }
 
+cleanup_and_exit:
     IedConnection_destroy(con);
 }
 

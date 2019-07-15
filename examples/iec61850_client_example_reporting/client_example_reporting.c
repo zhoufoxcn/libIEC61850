@@ -11,7 +11,7 @@
 #include <signal.h>
 #include <time.h>
 
-#include "thread.h"
+#include "hal_thread.h"
 
 static int running = 0;
 
@@ -24,18 +24,16 @@ void sigint_handler(int signalId)
 void
 reportCallbackFunction(void* parameter, ClientReport report)
 {
-    ClientDataSet dataSet = ClientReport_getDataSet(report);
-
     LinkedList dataSetDirectory = (LinkedList) parameter;
 
-    MmsValue* dataSetValues = ClientDataSet_getValues(dataSet);
+    MmsValue* dataSetValues = ClientReport_getDataSetValues(report);
 
-    printf("received report for %s\n", ClientReport_getRcbReference(report));
+    printf("received report for %s with rptId %s\n", ClientReport_getRcbReference(report), ClientReport_getRptId(report));
 
     if (ClientReport_hasTimestamp(report)) {
         time_t unixTime = ClientReport_getTimestamp(report) / 1000;
 
-#ifdef _MSC_VER
+#ifdef WIN32
 		char* timeBuf = ctime(&unixTime);
 #else
 		char timeBuf[30];
@@ -50,7 +48,7 @@ reportCallbackFunction(void* parameter, ClientReport report)
     for (i = 0; i < LinkedList_size(dataSetDirectory); i++) {
         ReasonForInclusion reason = ClientReport_getReasonForInclusion(report, i);
 
-        if (reason != REASON_NOT_INCLUDED) {
+        if (reason != IEC61850_REASON_NOT_INCLUDED) {
 
             LinkedList entry = LinkedList_get(dataSetDirectory, i);
 
@@ -107,7 +105,7 @@ int main(int argc, char** argv) {
 
         /* Read RCB values */
         ClientReportControlBlock rcb =
-                IedConnection_getRCBValues(con, &error, "simpleIOGenericIO/LLN0.RP.EventsRCB", NULL);
+                IedConnection_getRCBValues(con, &error, "simpleIOGenericIO/LLN0.RP.EventsRCB01", NULL);
 
         if (error != IED_ERROR_OK) {
             printf("getRCBValues service error!\n");
@@ -118,13 +116,14 @@ int main(int argc, char** argv) {
         ClientReportControlBlock_setResv(rcb, true);
         ClientReportControlBlock_setDataSetReference(rcb, "simpleIOGenericIO/LLN0$Events"); /* NOTE the "$" instead of "." ! */
         ClientReportControlBlock_setRptEna(rcb, true);
+        ClientReportControlBlock_setGI(rcb, true);
 
         /* Configure the report receiver */
-        IedConnection_installReportHandler(con, "simpleIOGenericIO/LLN0.RP.EventsRCB", reportCallbackFunction,
-                (void*) dataSetDirectory, clientDataSet);
+        IedConnection_installReportHandler(con, "simpleIOGenericIO/LLN0.RP.EventsRCB", ClientReportControlBlock_getRptId(rcb), reportCallbackFunction,
+                (void*) dataSetDirectory);
 
         /* Write RCB parameters and enable report */
-        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_RESV | RCB_ELEMENT_DATSET | RCB_ELEMENT_RPT_ENA, true);
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_RESV | RCB_ELEMENT_DATSET | RCB_ELEMENT_RPT_ENA | RCB_ELEMENT_GI, true);
 
         if (error != IED_ERROR_OK) {
             printf("setRCBValues service error!\n");
@@ -133,7 +132,9 @@ int main(int argc, char** argv) {
 
         Thread_sleep(1000);
 
-        IedConnection_triggerGIReport(con, &error, "simpleIOGenericIO/LLN0.RP.EventsRCB");
+        /* Trigger GI Report */
+        ClientReportControlBlock_setGI(rcb, true);
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_GI, true);
 
         if (error != IED_ERROR_OK) {
             printf("Error triggering a GI report (code: %i)\n", error);
@@ -152,7 +153,9 @@ int main(int argc, char** argv) {
 
         exit_error:
 
-        IedConnection_disableReporting(con, &error, "simpleIOGenericIO/LLN0.RP.EventsRCB");
+        /* disable reporting */
+        ClientReportControlBlock_setRptEna(rcb, false);
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_RPT_ENA, true);
 
         ClientDataSet_destroy(clientDataSet);
 

@@ -2,16 +2,24 @@ cmake_minimum_required(VERSION 2.8)
 
 # automagically detect if we should cross-compile
 if(DEFINED ENV{TOOLCHAIN})
-	set(CMAKE_C_COMPILER	$ENV{TOOLCHAIN}gcc)
-	set(CMAKE_CXX_COMPILER	$ENV{TOOLCHAIN}g++)
-	set(CMAKE_AR	"$ENV{TOOLCHAIN}ar" CACHE FILEPATH "CW archiver" FORCE)
+    set(CMAKE_C_COMPILER	$ENV{TOOLCHAIN}gcc)
+    set(CMAKE_CXX_COMPILER	$ENV{TOOLCHAIN}g++)
+    set(CMAKE_AR	"$ENV{TOOLCHAIN}ar" CACHE FILEPATH "CW archiver" FORCE)
 endif()
 
 project(libiec61850)
+ENABLE_TESTING()
 
-set(LIB_VERSION_MAJOR "0")
-set(LIB_VERSION_MINOR "7")
-set(LIB_VERSION_PATCH "6")
+set(LIB_VERSION_MAJOR "1")
+set(LIB_VERSION_MINOR "3")
+set(LIB_VERSION_PATCH "3")
+set(LIB_VERSION "${LIB_VERSION_MAJOR}.${LIB_VERSION_MINOR}.${LIB_VERSION_PATCH}")
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/third_party/cmake/modules/")
+
+# feature checks
+include(CheckLibraryExists)
+check_library_exists(rt clock_gettime "time.h" CONFIG_SYSTEM_HAS_CLOCK_GETTIME)
 
 # check if we are on a little or a big endian
 include (TestBigEndian)
@@ -21,106 +29,152 @@ set(CONFIG_MMS_MAXIMUM_PDU_SIZE "65000" CACHE STRING "Configure the maximum size
 set(CONFIG_MAXIMUM_TCP_CLIENT_CONNECTIONS 5 CACHE STRING "Configure the maximum number of clients allowed to connect to the server")
 
 option(BUILD_EXAMPLES "Build the examples" ON)
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" OFF)
 
-# choose the library features which shall be included
+option(CONFIG_MMS_SINGLE_THREADED "Compile for single threaded version" ON)
+option(CONFIG_MMS_THREADLESS_STACK "Optimize stack for threadless operation (warning: single- or multi-threaded server will not work!)" OFF)
+option(CONFIG_ACTIVATE_TCP_KEEPALIVE "Activate TCP keepalive" ON)
 option(CONFIG_INCLUDE_GOOSE_SUPPORT "Build with GOOSE support" ON)
 
+# choose the library features which shall be included
 option(CONFIG_IEC61850_CONTROL_SERVICE "Build with support for IEC 61850 control features" ON)
-
 option(CONFIG_IEC61850_REPORT_SERVICE "Build with support for IEC 61850 reporting services" ON)
+option(CONFIG_IEC61850_LOG_SERVICE "Build with support for IEC 61850 logging services" ON)
+option(CONFIG_IEC61850_SETTING_GROUPS "Build with support for IEC 61850 setting group services" ON)
+option(CONFIG_IEC61850_SUPPORT_USER_READ_ACCESS_CONTROL "Allow user provided callback to control read access" ON)
 
-option(CONFIG_ACTIVATE_TCP_KEEPALIVE "Activate TCP keepalive" ON)
-
-set(CONFIG_REPORTING_DEFAULT_REPORT_BUFFER_SIZE "8000" CACHE STRING "Default buffer size for buffered reports in byte" )
+set(CONFIG_REPORTING_DEFAULT_REPORT_BUFFER_SIZE "65536" CACHE STRING "Default buffer size for buffered reports in byte" )
 
 # advanced options
 option(DEBUG "Enable debugging mode (include assertions)" OFF)
-option(DEBUG_COTP "Enable COTP printf debugging" OFF)
-option(DEBUG_ISO_SERVER "Enable ISO SERVER printf debugging" OFF)
-option(DEBUG_ISO_CLIENT "Enable ISO CLIENT printf debugging" OFF)
-option(DEBUG_IED_SERVER "Enable IED SERVER printf debugging" OFF)
-option(DEBUG_IED_CLIENT "Enable IED CLIENT printf debugging" OFF)
-option(DEBUG_MMS_SERVER "Enable MMS SERVER printf debugging" OFF)
-option(DEBUG_MMS_CLIENT "Enable MMS CLIENT printf debugging" OFF)
-#mark_as_advanced(DEBUG DEBUG_COTP DEBUG_ISO_SERVER DEBUG_ISO_CLIENT DEBUG_IED_SERVER
-#				 DEBUG_IED_CLIENT DEBUG_MMS_SERVER DEBUG_MMS_CLIENT)
+option(DEBUG_SOCKET "Enable printf debugging for socket layer" ${DEBUG})
+option(DEBUG_COTP "Enable COTP printf debugging" ${DEBUG})
+option(DEBUG_ISO_SERVER "Enable ISO SERVER printf debugging" ${DEBUG})
+option(DEBUG_ISO_CLIENT "Enable ISO CLIENT printf debugging" ${DEBUG})
+option(DEBUG_IED_SERVER "Enable IED SERVER printf debugging" ${DEBUG})
+option(DEBUG_IED_CLIENT "Enable IED CLIENT printf debugging" ${DEBUG})
+option(DEBUG_MMS_SERVER "Enable MMS SERVER printf debugging" ${DEBUG})
+option(DEBUG_MMS_CLIENT "Enable MMS CLIENT printf debugging" ${DEBUG})
+option(DEBUG_GOOSE_SUBSCRIBER "Enable GOOSE subscriber printf debugging" ${DEBUG})
+option(DEBUG_GOOSE_PUBLISHER "Enable GOOSE publisher printf debugging" ${DEBUG})
+option(DEBUG_SV_SUBSCRIBER "Enable Sampled Values subscriber debugging" ${DEBUG})
+option(DEBUG_SV_PUBLISHER "Enable Sampled Values publisher debugging" ${DEBUG})
+option(DEBUG_HAL_ETHERNET "Enable Ethernet HAL printf debugging" ${DEBUG})
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/config
-    src/common
-    src/goose
-    src/hal
-    src/hal/ethernet
-    src/hal/socket
-    src/hal/thread
-    src/hal/filesystem
-    src/iedclient
-    src/iedcommon
-    src/iedserver
-    src/iedserver/impl
-    src/iedserver/mms_mapping
-    src/iedserver/model
-    src/mms/asn1
-    src/mms/iso_acse
-    src/mms/iso_client
-    src/mms/iso_cotp
-    src/mms/iso_mms/asn1c
-    src/mms/iso_mms/client
-    src/mms/iso_mms/common
-    src/mms/iso_mms/server
-    src/mms/iso_presentation
-    src/mms/iso_server
-    src/mms/iso_common
-    src/mms/iso_session
+    ${CMAKE_CURRENT_LIST_DIR}/src/common/inc
+    ${CMAKE_CURRENT_LIST_DIR}/src/goose
+    ${CMAKE_CURRENT_LIST_DIR}/src/sampled_values
+    ${CMAKE_CURRENT_LIST_DIR}/src/hal/inc
+    ${CMAKE_CURRENT_LIST_DIR}/src/iec61850/inc
+    ${CMAKE_CURRENT_LIST_DIR}/src/iec61850/inc_private
+    ${CMAKE_CURRENT_LIST_DIR}/src/mms/inc
+    ${CMAKE_CURRENT_LIST_DIR}/src/mms/inc_private
+    ${CMAKE_CURRENT_LIST_DIR}/src/mms/iso_mms/asn1c
+    ${CMAKE_CURRENT_LIST_DIR}/src/logging
 )
 
-set(API_HEADERS 
-	src/hal/hal.h 
-	src/hal/ethernet/ethernet.h 
-	src/hal/thread/thread.h 
-	src/hal/filesystem/filesystem.h 
-	src/common/libiec61850_common_api.h
-	src/common/linked_list.h
-	src/common/byte_buffer.h
-	src/iedclient/iec61850_client.h
-	src/iedcommon/iec61850_common.h
-	src/iedserver/iec61850_server.h
-	src/iedserver/model/model.h
-	src/iedserver/model/cdc.h
-	src/iedserver/model/dynamic_model.h
-	src/iedserver/model/config_file_parser.h
-	src/mms/iso_mms/common/mms_value.h
-	src/mms/iso_mms/common/mms_common.h
-	src/mms/iso_mms/common/mms_types.h
-	src/mms/iso_mms/server/mms_device_model.h
-	src/mms/iso_mms/server/mms_server.h
-	src/mms/iso_mms/server/mms_named_variable_list.h
-	src/mms/iso_mms/common/mms_type_spec.h
-	src/mms/asn1/ber_integer.h
-	src/mms/asn1/asn1_ber_primitive_value.h
-	src/mms/iso_server/iso_server.h
-	src/mms/iso_common/iso_connection_parameters.h
-	src/goose/goose_subscriber.h
-    src/mms/iso_mms/client/mms_client_connection.h
-    src/mms/iso_client/iso_client_connection.h
-    src/hal/socket/socket.h 
+set(API_HEADERS
+    hal/inc/hal_time.h
+    hal/inc/hal_thread.h
+    hal/inc/hal_filesystem.h
+    hal/inc/hal_ethernet.h
+    hal/inc/tls_config.h
+    hal/inc/platform_endian.h
+    hal/inc/lib_memory.h
+    src/common/inc/libiec61850_common_api.h
+    src/common/inc/libiec61850_platform_includes.h
+    src/common/inc/linked_list.h
+    src/common/inc/byte_buffer.h
+    src/common/inc/string_utilities.h
+    src/iec61850/inc/iec61850_client.h
+    src/iec61850/inc/iec61850_common.h
+    src/iec61850/inc/iec61850_server.h
+    src/iec61850/inc/iec61850_model.h
+    src/iec61850/inc/iec61850_cdc.h
+    src/iec61850/inc/iec61850_dynamic_model.h
+    src/iec61850/inc/iec61850_config_file_parser.h
+    src/mms/inc/mms_value.h
+    src/mms/inc/mms_common.h
+    src/mms/inc/mms_types.h
+    src/mms/inc/mms_device_model.h
+    src/mms/inc/mms_server.h
+    src/mms/inc/mms_named_variable_list.h
+    src/mms/inc/mms_type_spec.h
+    src/mms/inc/mms_client_connection.h
+    src/mms/inc/iso_connection_parameters.h
+    src/mms/inc/iso_server.h
+    src/mms/inc/ber_integer.h
+    src/mms/inc/asn1_ber_primitive_value.h
+    src/goose/goose_subscriber.h
+    src/goose/goose_receiver.h
+    src/goose/goose_publisher.h
+    src/sampled_values/sv_subscriber.h
+    src/sampled_values/sv_publisher.h
+    src/logging/logging_api.h
+    ${CMAKE_CURRENT_BINARY_DIR}/config/stack_config.h
 )
 
-IF(WIN32)
-include_directories(
-    src/vs
-)
-ENDIF(WIN32)
+if(MSVC AND MSVC_VERSION LESS 1800)
+    include_directories(
+        ${CMAKE_CURRENT_LIST_DIR}/src/vs
+    )
+endif(MSVC AND MSVC_VERSION LESS 1800)
+
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/third_party/mbedtls/mbedtls-2.6.0)
+set(WITH_MBEDTLS 1)
+endif(EXISTS ${CMAKE_CURRENT_LIST_DIR}/third_party/mbedtls/mbedtls-2.6.0)
+
+if(WITH_MBEDTLS)
+
+add_definitions(-DCONFIG_MMS_SUPPORT_TLS=1)
+
+endif(WITH_MBEDTLS)
 
 # write the detected stuff to this file
-configure_file(config/stack_config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config/stack_config.h)
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/config/stack_config.h.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/config/stack_config.h
+)
+
+include_directories(
+	${CMAKE_CURRENT_LIST_DIR}/hal/inc
+)
+
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/hal")
+
+if(DEBUG)
+	set(CMAKE_BUILD_TYPE Debug)
+endif(DEBUG)
 
 if(BUILD_EXAMPLES)
-	add_subdirectory(examples)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/examples)
 endif(BUILD_EXAMPLES)
 
-add_subdirectory(src)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src)
 
-INSTALL(FILES ${API_HEADERS} DESTINATION include/libiec61850)
+install(FILES ${API_HEADERS} DESTINATION include/libiec61850 COMPONENT Development)
 
+if(BUILD_PYTHON_BINDINGS)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/pyiec61850)
+endif(BUILD_PYTHON_BINDINGS)
 
+set(CPACK_PACKAGE_DESCRIPTION "IEC 61850 MMS/GOOSE client and server library")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "IEC 61850 MMS/GOOSE client and server library")
+set(CPACK_PACKAGE_VENDOR "MZ Automation GmbH")
+set(CPACK_PACKAGE_CONTACT "info@libiec61850.com")
+set(CPACK_PACKAGE_VERSION_MAJOR "${LIB_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${LIB_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${LIB_VERSION_PATCH}")
+set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${LIB_VERSION_MAJOR}.${LIB_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}_${CMAKE_SYSTEM_PROCESSOR}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${LIB_VERSION_MAJOR}.${LIB_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
+set(CPACK_COMPONENTS_ALL Libraries Development Applications)
+#set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CMAKE_PROJECT_NAME}")
+
+if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
+    include(InstallRequiredSystemLibraries)
+
+    include(CPack)
+endif(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")

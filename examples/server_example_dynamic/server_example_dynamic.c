@@ -6,7 +6,7 @@
  */
 
 #include "iec61850_server.h"
-#include "thread.h"
+#include "hal_thread.h"
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,6 +40,8 @@ int main(int argc, char** argv) {
     DataObject* lln0_mod = CDC_ENS_create("Mod", (ModelNode*) lln0, 0);
     DataObject* lln0_health = CDC_ENS_create("Health", (ModelNode*) lln0, 0);
 
+    SettingGroupControlBlock_create(lln0, 1, 1);
+
     /* Add a temperature sensor LN */
     LogicalNode* ttmp1 = LogicalNode_create("TTMP1", lDevice1);
     DataObject* ttmp1_tmpsv = CDC_SAV_create("TmpSv", (ModelNode*) ttmp1, 0, false);
@@ -54,6 +56,8 @@ int main(int argc, char** argv) {
 
     ReportControlBlock_create("events01", lln0, "events01", false, NULL, 1, TRG_OPT_DATA_CHANGED, rptOptions, 50, 0);
     ReportControlBlock_create("events02", lln0, "events02", false, NULL, 1, TRG_OPT_DATA_CHANGED, rptOptions, 50, 0);
+
+    GSEControlBlock_create("gse01", lln0, "events01", "events", 1, false, 200, 3000);
 
     /*********************
      * run server
@@ -79,9 +83,8 @@ int main(int argc, char** argv) {
 	while (running) {
 	    IedServer_lockDataModel(iedServer);
 
-	    MmsValue_setFloat(temperatureValue->mmsValue, val);
-	    MmsValue_setUtcTimeMs(temperatureTimestamp->mmsValue, Hal_getTimeInMs());
-	    IedServer_updateAttributeValue(iedServer, temperatureValue, temperatureValue->mmsValue);
+	    IedServer_updateUTCTimeAttributeValue(iedServer, temperatureTimestamp, Hal_getTimeInMs());
+	    IedServer_updateFloatAttributeValue(iedServer, temperatureValue, val);
 
 	    IedServer_unlockDataModel(iedServer);
 

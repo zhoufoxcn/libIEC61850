@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -57,39 +58,63 @@ import com.libiec61850.scl.types.EnumerationType;
 import com.libiec61850.scl.types.LogicalNodeType;
 import com.libiec61850.scl.types.TypeDeclarations;
 
-public class SclParser {
-
+public class SclParser 
+{
     private List<IED> ieds;
     private Communication communication;
     private TypeDeclarations typeDeclarations;
-    private Node scl;
+    
+    public static boolean withOutput = true;
+    
+    public TypeDeclarations getTypeDeclarations() {
+        return typeDeclarations;
+    }
 
-    public SclParser(InputStream stream) throws SclParserException {
+    private Node scl;
+    
+    public SclParser(InputStream stream, boolean withOutput) throws SclParserException {
+        this.withOutput = withOutput;
+        
         Document doc = parseXmlDocument(stream);
         
         scl = getRootNode(doc);
 
-        System.out.println("parse data type templates ...");
+        if (withOutput)
+            System.out.println("parse data type templates ...");
+        
         typeDeclarations = parseTypeDeclarations();
 
-        System.out.println("parse IED section ...");
+        if (withOutput)
+            System.out.println("parse IED section ...");
         
         parseIedSections();
 
-        System.out.println("parse communication section ...");
+        if (withOutput)
+            System.out.println("parse communication section ...");
+        
         communication = parseCommunicationSection();
         
         if (communication == null)
-        	System.out.println("WARNING: No communication section found!");
+            if (withOutput)
+                System.out.println("WARNING: No communication section found!");
     }
 
-    public IED getIedByteName(String iedName) {
+    public SclParser(InputStream stream) throws SclParserException {
+        this(stream, true);
+    }
+
+    public IED getIedByName(String iedName) {
     	for (IED ied : ieds) {
     		if (ied.getName().equals(iedName))
     			return ied;
     	}
     	
         return null;
+    }
+    
+    public Collection<IED> getIeds()
+    {
+        return ieds;
     }
     
     public IED getFirstIed() {
@@ -280,7 +305,8 @@ public class SclParser {
 
                         if (connectedAP.getApName().equals(accessPointName)) {
 
-                            System.out.println("Found connectedAP " + accessPointName + " for IED " + ied.getName());
+                            if (withOutput)
+                                System.out.println("Found connectedAP " + accessPointName + " for IED " + ied.getName());
 
                             return connectedAP;
                         }
@@ -294,4 +320,32 @@ public class SclParser {
         return null;
     }
 
+    public ConnectedAP getConnectedAP(String iedName, String accessPointName) {
+        communication = this.getCommunication();
+
+        if (communication != null) {
+            List<SubNetwork> subNetworks = communication.getSubNetworks();
+
+            for (SubNetwork subNetwork : subNetworks) {
+                List<ConnectedAP> connectedAPs = subNetwork.getConnectedAPs();
+
+                for (ConnectedAP connectedAP : connectedAPs) {
+                    if (connectedAP.getIedName().equals(iedName)) {
+
+                        if (connectedAP.getApName().equals(accessPointName)) {
+
+                            if (withOutput)
+                                System.out.println("Found connectedAP " + accessPointName + " for IED " + iedName);
+
+                            return connectedAP;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        return null;
+    }
 }

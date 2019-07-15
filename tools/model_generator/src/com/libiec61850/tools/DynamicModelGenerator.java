@@ -3,7 +3,7 @@ package com.libiec61850.tools;
 /*
  *  DynamicModelGenerator.java
  *
- *  Copyright 2014 Michael Zillgith
+ *  Copyright 2014-2016 Michael Zillgith
  *
  *  This file is part of libIEC61850.
  *
@@ -31,10 +31,11 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
 
+import com.libiec61850.scl.DataAttributeDefinition;
 import com.libiec61850.scl.SclParser;
 import com.libiec61850.scl.SclParserException;
 import com.libiec61850.scl.communication.ConnectedAP;
-import com.libiec61850.scl.communication.GSEAddress;
+import com.libiec61850.scl.communication.PhyComAddress;
 import com.libiec61850.scl.model.AccessPoint;
 import com.libiec61850.scl.model.DataAttribute;
 import com.libiec61850.scl.model.DataModelValue;
@@ -43,9 +44,12 @@ import com.libiec61850.scl.model.DataSet;
 import com.libiec61850.scl.model.FunctionalConstraintData;
 import com.libiec61850.scl.model.GSEControl;
 import com.libiec61850.scl.model.IED;
+import com.libiec61850.scl.model.Log;
+import com.libiec61850.scl.model.LogControl;
 import com.libiec61850.scl.model.LogicalDevice;
 import com.libiec61850.scl.model.LogicalNode;
 import com.libiec61850.scl.model.ReportControlBlock;
+import com.libiec61850.scl.model.SettingControl;
 
 public class DynamicModelGenerator {
 
@@ -60,7 +64,7 @@ public class DynamicModelGenerator {
         if (iedName == null)
         	ied = sclParser.getFirstIed();
         else
-        	ied = sclParser.getIedByteName(iedName);
+        	ied = sclParser.getIedByName(iedName);
 
         if (ied == null)
             throw new SclParserException("No data model present in SCL file! Exit.");
@@ -82,7 +86,7 @@ public class DynamicModelGenerator {
         output.println("MODEL(" + ied.getName() + "){");
         for (LogicalDevice logicalDevice : logicalDevices) {
             output.print("LD(");
-            output.print(ied.getName() + logicalDevice.getInst() + "){\n");
+            output.print(logicalDevice.getInst() + "){\n");
 
             exportLogicalNodes(output, logicalDevice);
 
@@ -95,7 +99,7 @@ public class DynamicModelGenerator {
         for (LogicalNode logicalNode : logicalDevice.getLogicalNodes()) {
             output.print("LN(" + logicalNode.getName() + "){\n");
 
-            exportLogicalNode(output, logicalNode);
+            exportLogicalNode(output, logicalNode, logicalDevice);
 
             output.println("}");
         }
@@ -105,7 +109,12 @@ public class DynamicModelGenerator {
         return iecString.replace('.', '$');
     }
 
-    private void exportLogicalNode(PrintStream output, LogicalNode logicalNode) {
+    private void exportLogicalNode(PrintStream output, LogicalNode logicalNode, LogicalDevice logicalDevice) {
+    	
+    	for (SettingControl sgcb : logicalNode.getSettingGroupControlBlocks()) {
+    		output.print("SG(" + sgcb.getActSG() + " " + sgcb.getNumOfSGs() + ")\n");
+    	}
+    	
         for (DataObject dataObject : logicalNode.getDataObjects()) {
             output.print("DO(" + dataObject.getName() + " " + dataObject.getCount() + "){\n");
 
@@ -115,7 +124,7 @@ public class DynamicModelGenerator {
         }
         
         for (DataSet dataSet : logicalNode.getDataSets())
-            exportDataSet(output, dataSet);
+            exportDataSet(output, dataSet, logicalNode);
         
         for (ReportControlBlock rcb : logicalNode.getReportControlBlocks()) {
              
@@ -135,10 +144,16 @@ public class DynamicModelGenerator {
                 printRCBInstance(output, rcb, "");  
         }
         
+        for (LogControl lcb : logicalNode.getLogControlBlocks())
+            printLCB(output, lcb, logicalNode, logicalDevice);
+        
+        for (Log log : logicalNode.getLogs())
+            output.println("LOG(" + log.getName() + ");");
+        
         for (GSEControl gcb : logicalNode.getGSEControlBlocks()) {
             LogicalDevice ld = logicalNode.getParentLogicalDevice();
             
-            GSEAddress gseAddress = null;
+            PhyComAddress gseAddress = null;
             
             if (connectedAP != null)
             	gseAddress = connectedAP.lookupGSEAddress(ld.getInst(), gcb.getName());
@@ -154,7 +169,12 @@ public class DynamicModelGenerator {
                 output.print('1');
             else
                 output.print('0');
-            
+            output.print(' ');
+            output.print(gcb.getMinTime());
+            output.print(' ');
+            output.print(gcb.getMaxTime());
+            output.print(' ');
+                       
             if (gseAddress == null) {
                 output.println(");");
             }
@@ -174,6 +194,36 @@ public class DynamicModelGenerator {
                 output.println("}");
             }
         }
+    }
+    
+    private void printLCB(PrintStream output, LogControl lcb, LogicalNode ln, LogicalDevice logicalDevice) {
+        output.print("LC(");
+        output.print(lcb.getName() + " ");
+        
+        if (lcb.getDataSet() != null)
+            output.print(lcb.getDataSet() + " ");
+        else
+            output.print("- ");
+        
+        if (lcb.getLogName() != null) {
+            String logRef = logicalDevice.getInst() + "/" + ln.getName() + "$" + lcb.getLogName();
+            output.print(logRef + " ");
+        }
+        else
+            output.print("- ");
+        
+        output.print(lcb.getTriggerOptions().getIntValue() + " ");
+        output.print(lcb.getIntgPd() + " ");
+        
+        if (lcb.isLogEna())
+            output.print("1 ");
+        else
+            output.print("0 ");
+        
+        if (lcb.isReasonCode())
+            output.println("1);");
+        else
+            output.println("0);");
     }
 
     private void printRCBInstance(PrintStream output, ReportControlBlock rcb, String index) {
@@ -210,7 +260,7 @@ public class DynamicModelGenerator {
         output.println(");");
     }
 
-    private void exportDataSet(PrintStream output, DataSet dataSet) {
+    private void exportDataSet(PrintStream output, DataSet dataSet, LogicalNode logicalNode) {
         output.print("DS(" + dataSet.getName() + "){\n");
         for (FunctionalConstraintData fcda : dataSet.getFcda()) {
             String mmsVariableName = "";
@@ -230,14 +280,28 @@ public class DynamicModelGenerator {
             if (fcda.getDaName() != null)
                 mmsVariableName += "$" + toMmsString(fcda.getDaName());
             
-            output.print("DE(" + mmsVariableName + ");\n");
+            String logicalDeviceName = null;
+            
+            if (fcda.getLdInstance() != null) {
+            	
+            	if (!fcda.getLdInstance().equals(logicalNode.getParentLogicalDevice().getInst())) {
+            		logicalDeviceName = fcda.getLdInstance();
+            	}
+            }
+            
+            
+            if (logicalDeviceName != null)         
+            	output.print("DE(" + logicalDeviceName + "/" + mmsVariableName + ");\n");
+            else
+            	output.print("DE(" + mmsVariableName + ");\n");
+            
         }
         output.println("}");
     }
 
     private void exportDataObject(PrintStream output, DataObject dataObject) {
         for (DataObject subDataObject : dataObject.getSubDataObjects()) {
-            output.print("DO(" + subDataObject.getName() + " " + dataObject.getCount() + "){\n");
+            output.print("DO(" + subDataObject.getName() + " " + subDataObject.getCount() + "){\n");
 
             exportDataObject(output, subDataObject);
 
@@ -274,8 +338,17 @@ public class DynamicModelGenerator {
         output.print(")"); 
                 
         if (dataAttribute.isBasicAttribute()) {
-            DataModelValue value = dataAttribute.getValue();
-            
+           DataModelValue value = dataAttribute.getValue();
+           
+           /* if no value is given use default value for type if present */
+           if (value == null) { 
+        	   value = dataAttribute.getDefinition().getValue();
+        	   
+        	   if (value != null)
+	        	   if (value.getValue() == null)
+	        		   value.updateEnumOrdValue(ied.getTypeDeclarations());        	   
+           }
+           
            if (value != null) {
                
                switch (dataAttribute.getType()) {
@@ -303,6 +376,7 @@ public class DynamicModelGenerator {
                case UNICODE_STRING_255:
                    output.print("=\"" + value.getValue()+ "\"");
                    break;
+               case CURRENCY:
                case VISIBLE_STRING_32:
                case VISIBLE_STRING_64:
                case VISIBLE_STRING_129:

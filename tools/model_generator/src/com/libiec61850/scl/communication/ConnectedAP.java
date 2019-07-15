@@ -35,6 +35,9 @@ public class ConnectedAP {
     private String apName;
 
     private List<GSE> gses;
+    private List<SMV> smvs;
+    
+    private Address address = null;
 
     public ConnectedAP(Node node) throws SclParserException {
         iedName = ParserUtils.parseAttribute(node, "iedName");
@@ -47,9 +50,20 @@ public class ConnectedAP {
 
         List<Node> gseNodes = ParserUtils.getChildNodesWithTag(node, "GSE");
 
-        for (Node gseNode : gseNodes) {
+        for (Node gseNode : gseNodes)
             gses.add(new GSE(gseNode));
-        }
+                
+        smvs = new LinkedList<SMV>();
+        
+        List<Node> smvNodes = ParserUtils.getChildNodesWithTag(node, "SMV");
+        
+        for (Node smvNode : smvNodes)
+        	smvs.add(new SMV(smvNode));
+        
+        Node addressNode = ParserUtils.getChildNodeWithTag(node, "Address");
+        
+        if (addressNode != null)
+            address = new Address(addressNode);
     }
 
     public String getIedName() {
@@ -59,17 +73,37 @@ public class ConnectedAP {
     public String getApName() {
         return apName;
     }
+    
+    public Address getAddress() {
+        return address;
+    }
 
     public List<GSE> getGses() {
         return gses;
     }
 
-    public GSEAddress lookupGSEAddress(String logicalDeviceName, String name) {
+    public List<SMV> getSmvs() {
+    	return smvs;
+    }
+    
+    public PhyComAddress lookupGSEAddress(String logicalDeviceName, String name) {
 
         for (GSE gse : this.getGses()) {
             if (gse.getLdInst().equals(logicalDeviceName)) {
                 if (gse.getCbName().equals(name))
                     return gse.getAddress();
+            }
+        }
+
+        return null;
+    }
+    
+    public PhyComAddress lookupSMVAddress(String logicalDeviceName, String name) {
+
+        for (SMV smv : this.getSmvs()) {
+            if (smv.getLdInst().equals(logicalDeviceName)) {
+                if (smv.getCbName().equals(name))
+                    return smv.getAddress();
             }
         }
 

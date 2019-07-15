@@ -1,7 +1,7 @@
 /*
  *  mms_server_common.c
  *
- *  Copyright 2013 Michael Zillgith
+ *  Copyright 2013-2016 Michael Zillgith
  *
  *  This file is part of libIEC61850.
  *
@@ -21,6 +21,7 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "mms_server_internal.h"
 
 /* write_out function required for ASN.1 encoding */
@@ -34,7 +35,7 @@ mmsServer_write_out(const void *buffer, size_t size, void *app_key)
 MmsPdu_t*
 mmsServer_createConfirmedResponse(uint32_t invokeId)
 {
-	MmsPdu_t* mmsPdu = (MmsPdu_t*) calloc(1, sizeof(MmsPdu_t));
+	MmsPdu_t* mmsPdu = (MmsPdu_t*) GLOBAL_CALLOC(1, sizeof(MmsPdu_t));
 
 	mmsPdu->present = MmsPdu_PR_confirmedResponsePdu;
 
@@ -44,90 +45,197 @@ mmsServer_createConfirmedResponse(uint32_t invokeId)
 	return mmsPdu;
 }
 
-
-void
-mmsServer_createConfirmedErrorPdu(uint32_t invokeId, ByteBuffer* response, MmsError errorType)
+static void
+mapErrorTypeToErrorClass(MmsError errorType, uint8_t* tag, uint8_t* value)
 {
-	MmsPdu_t* mmsPdu = (MmsPdu_t*) calloc(1, sizeof(MmsPdu_t));
-	mmsPdu->present = MmsPdu_PR_confirmedErrorPDU;
+    switch (errorType) {
 
-	asn_long2INTEGER(&(mmsPdu->choice.confirmedErrorPDU.invokeID),
-			invokeId);
+    case MMS_ERROR_ACCESS_OBJECT_ACCESS_UNSUPPORTED:
+        *tag = 0x87; /* access */
+        *value = 1;
+        break;
 
-	if (errorType == MMS_ERROR_ACCESS_OBJECT_NON_EXISTENT) {
-		mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-				ServiceError__errorClass_PR_access;
+    case MMS_ERROR_ACCESS_OBJECT_NON_EXISTENT:
+        *tag = 0x87; /* access */
+        *value = 2;
+        break;
 
-		asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-						ServiceError__errorClass__access_objectnonexistent);
-	}
-	else if (errorType == MMS_ERROR_ACCESS_OBJECT_ACCESS_DENIED) {
-		mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-				ServiceError__errorClass_PR_access;
+    case MMS_ERROR_ACCESS_OBJECT_ACCESS_DENIED:
+        *tag = 0x87; /* access */
+        *value = 3;
+        break;
 
-		asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-				ServiceError__errorClass__access_objectaccessdenied);
-	}
-	else if (errorType == MMS_ERROR_ACCESS_OBJECT_ACCESS_UNSUPPORTED) {
-		mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-				ServiceError__errorClass_PR_access;
+    case MMS_ERROR_SERVICE_OTHER:
+        *tag = 0x84; /* service */
+        *value = 0;
+        break;
 
-		asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-				ServiceError__errorClass__access_objectaccessunsupported);
-	}
-	else if (errorType == MMS_ERROR_SERVICE_OTHER) {
-	    mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-	                            ServiceError__errorClass_PR_service;
-        asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-                        ServiceError__errorClass__service_other);
-	}
-	else if (errorType == MMS_ERROR_DEFINITION_OBJECT_EXISTS) {
-	    mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-                        ServiceError__errorClass_PR_definition;
-        asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-                        ServiceError__errorClass__definition_objectexists);
-	}
-	else if (errorType == MMS_ERROR_FILE_FILE_NON_EXISTENT) {
-        mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-                        ServiceError__errorClass_PR_file;
-        asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-                        ServiceError__errorClass__file_filenonexistent);
-	}
-	else if (errorType == MMS_ERROR_FILE_OTHER) {
-        mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-                        ServiceError__errorClass_PR_file;
-        asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-                        ServiceError__errorClass__file_other);
-	}
-    else if (errorType == MMS_ERROR_RESOURCE_OTHER) {
-        mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.present =
-                        ServiceError__errorClass_PR_resource;
-        asn_long2INTEGER(&mmsPdu->choice.confirmedErrorPDU.serviceError.errorClass.choice.access,
-                        ServiceError__errorClass__resource_other);
+    case MMS_ERROR_SERVICE_OBJECT_CONSTRAINT_CONFLICT:
+         *tag = 0x84; /* service */
+         *value = 5;
+         break;
+
+    case MMS_ERROR_DEFINITION_OTHER:
+        *tag = 0x82; /* definition */
+        *value = 0;
+        break;
+
+    case MMS_ERROR_DEFINITION_OBJECT_UNDEFINED:
+        *tag = 0x82; /* definition */
+        *value = 1;
+        break;
+
+    case MMS_ERROR_DEFINITION_TYPE_UNSUPPORTED:
+        *tag = 0x82; /* definition */
+        *value = 3;
+        break;
+
+    case MMS_ERROR_DEFINITION_OBJECT_EXISTS:
+        *tag = 0x82; /* definition */
+        *value = 5;
+        break;
+
+    case MMS_ERROR_FILE_OTHER:
+        *tag = 0x8b; /* file */
+        *value = 0;
+        break;
+
+    case MMS_ERROR_FILE_FILENAME_AMBIGUOUS:
+        *tag = 0x8b; /* file */
+        *value = 1;
+        break;
+
+    case MMS_ERROR_FILE_POSITION_INVALID:
+        *tag = 0x8b; /* file */
+        *value = 5;
+        break;
+
+    case MMS_ERROR_FILE_FILE_ACCESS_DENIED:
+        *tag = 0x8b; /* file */
+        *value = 6;
+        break;
+
+    case MMS_ERROR_FILE_FILE_NON_EXISTENT:
+        *tag = 0x8b; /* file */
+        *value = 7;
+        break;
+
+    case MMS_ERROR_FILE_DUPLICATE_FILENAME:
+        *tag = 0x8b; /* file */
+        *value = 8;
+        break;
+
+    case MMS_ERROR_FILE_INSUFFICIENT_SPACE_IN_FILESTORE:
+        *tag = 0x8b; /* file */
+        *value = 9;
+        break;
+
+    case MMS_ERROR_RESOURCE_OTHER:
+        *tag = 0x83; /* resource */
+        *value = 0;
+        break;
+
+    case MMS_ERROR_RESOURCE_CAPABILITY_UNAVAILABLE:
+        *tag = 0x83; /* resource */
+        *value = 4;
+        break;
+
+    default:
+
+        if (DEBUG_MMS_SERVER)
+            printf("MMS_SERVER: unknown errorType!\n");
+
+        *tag = 0x8c; /* others */
+        *value = 0;
+        break;
+
     }
 
-	der_encode(&asn_DEF_MmsPdu, mmsPdu,
-			mmsServer_write_out, (void*) response);
-
-	asn_DEF_MmsPdu.free_struct(&asn_DEF_MmsPdu, mmsPdu, 0);
 }
 
-int
+void
+mmsServer_createServiceErrorPduWithServiceSpecificInfo(uint32_t invokeId, ByteBuffer* response,
+        MmsError errorType, uint8_t* serviceSpecificInfo, int serviceSpecficInfoLength)
+{
+    /* determine encoded size */
+
+    uint32_t invokeIdSize = BerEncoder_UInt32determineEncodedSize(invokeId) + 2;
+
+    uint32_t specificInfoSize = 0;
+
+    if (serviceSpecificInfo != NULL)
+        specificInfoSize = 1 + BerEncoder_determineLengthSize(serviceSpecficInfoLength)
+                + serviceSpecficInfoLength;
+
+    uint32_t serviceErrorContentSize = 5 /* errorClass */ + specificInfoSize;
+
+    uint32_t serviceErrorSize = 1 + BerEncoder_determineLengthSize(serviceErrorContentSize) +
+            serviceErrorContentSize;
+
+    uint32_t confirmedErrorContentSize = serviceErrorSize + invokeIdSize;
+
+    /* encode */
+    uint8_t* buffer = response->buffer;
+    int bufPos = response->size;
+
+    bufPos = BerEncoder_encodeTL(0xa2, confirmedErrorContentSize, buffer, bufPos);
+
+    bufPos = BerEncoder_encodeTL(0x80, invokeIdSize - 2, buffer, bufPos); /* invokeID */
+    bufPos = BerEncoder_encodeUInt32(invokeId, buffer, bufPos);
+
+    bufPos = BerEncoder_encodeTL(0xa2, serviceErrorContentSize, buffer, bufPos); /* serviceError */
+    bufPos = BerEncoder_encodeTL(0xa0, 3, buffer, bufPos); /* serviceError */
+
+    uint8_t errorCodeTag;
+    uint8_t errorCodeValue;
+
+    mapErrorTypeToErrorClass(errorType, &errorCodeTag, &errorCodeValue);
+
+    buffer[bufPos++] = errorCodeTag;
+    buffer[bufPos++] = 1;
+    buffer[bufPos++] = errorCodeValue;
+
+    if (serviceSpecificInfo != NULL)
+        bufPos = BerEncoder_encodeOctetString(0xa3, serviceSpecificInfo, serviceSpecficInfoLength,
+                buffer, bufPos);
+
+    response->size = bufPos;
+}
+
+void /* Confirmed service error (ServiceError) */
+mmsMsg_createServiceErrorPdu(uint32_t invokeId, ByteBuffer* response, MmsError errorType)
+{
+    mmsServer_createServiceErrorPduWithServiceSpecificInfo(invokeId, response, errorType, NULL, 0);
+}
+
+bool
 mmsServer_isIndexAccess(AlternateAccess_t* alternateAccess)
 {
-	if (alternateAccess->list.array[0]->present == AlternateAccess__Member_PR_unnamed) {
-		if ((alternateAccess->list.array[0]->choice.unnamed->choice.selectAccess.present
-				== AlternateAccessSelection__selectAccess_PR_index) ||
-			(alternateAccess->list.array[0]->choice.unnamed->choice.selectAccess.present
-				== AlternateAccessSelection__selectAccess_PR_indexRange))
-		{
-			return 1;
-		}
-		else
-			return 0;
-	}
-	else
-		return 0;
+    if (alternateAccess->list.array[0]->present == AlternateAccess__Member_PR_unnamed) {
+        if ((alternateAccess->list.array[0]->choice.unnamed->choice.selectAccess.present
+                == AlternateAccessSelection__selectAccess_PR_index) ||
+                (alternateAccess->list.array[0]->choice.unnamed->choice.selectAccess.present
+                        == AlternateAccessSelection__selectAccess_PR_indexRange))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
+mmsServer_isComponentAccess(AlternateAccess_t* alternateAccess)
+{
+    if (alternateAccess->list.array[0]->present
+            == AlternateAccess__Member_PR_unnamed) {
+        if (alternateAccess->list.array[0]->choice.unnamed->choice.selectAccess.present
+                == AlternateAccessSelection__selectAccess_PR_component) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int
@@ -176,6 +284,28 @@ mmsServer_getNumberOfElements(AlternateAccess_t* alternateAccess)
 	return 0;
 }
 
+MmsNamedVariableList
+mmsServer_getNamedVariableListWithName(LinkedList namedVariableLists, const char* variableListName)
+{
+    MmsNamedVariableList variableList = NULL;
+
+    LinkedList element = LinkedList_getNext(namedVariableLists);
+
+    while (element != NULL) {
+        MmsNamedVariableList varList = (MmsNamedVariableList) element->data;
+
+        if (strcmp(MmsNamedVariableList_getName(varList), variableListName) == 0) {
+            variableList = varList;
+            break;
+        }
+
+        element = LinkedList_getNext(element);
+    }
+
+    return variableList;
+}
+
+
 void
 mmsServer_deleteVariableList(LinkedList namedVariableLists, char* variableListName)
 {
@@ -188,7 +318,7 @@ mmsServer_deleteVariableList(LinkedList namedVariableLists, char* variableListNa
 		if (strcmp(MmsNamedVariableList_getName(varList), variableListName)
 				== 0) {
 			previousElement->next = element->next;
-			free(element);
+			GLOBAL_FREEMEM(element);
 			MmsNamedVariableList_destroy(varList);
 
 			break;

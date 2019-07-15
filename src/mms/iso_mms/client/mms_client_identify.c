@@ -21,11 +21,11 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "stack_config.h"
 #include "mms_common.h"
 #include "mms_client_connection.h"
 #include "byte_buffer.h"
-#include "string_utilities.h"
 
 #include "mms_client_internal.h"
 #include "ber_encoder.h"
@@ -81,27 +81,31 @@ mmsClient_parseIdentifyResponse(MmsConnection self)
         tag = buffer[bufPos++];
 
         bufPos = BerDecoder_decodeLength(buffer, &length, bufPos, maxBufPos);
+        if (bufPos < 0) goto exit_error;
 
         switch (tag) {
         case 0x80: /* vendorName */
-            vendorName = createStringFromBuffer(buffer + bufPos, length);
+            vendorName = StringUtils_createStringFromBuffer(buffer + bufPos, length);
             bufPos += length;
             break;
         case 0x81: /* modelName */
-            modelName = createStringFromBuffer(buffer + bufPos, length);
+            modelName = StringUtils_createStringFromBuffer(buffer + bufPos, length);
             bufPos += length;
             break;
         case 0x82: /* revision */
-            revision = createStringFromBuffer(buffer + bufPos, length);
+            revision = StringUtils_createStringFromBuffer(buffer + bufPos, length);
             bufPos += length;
             break;
         case 0x83: /* list of abstract syntaxes */
             bufPos += length;
             break;
+        default: /* ignore unknown tags */
+        	bufPos += length;
+        	break;
         }
     }
 
-    identityInfo = (MmsServerIdentity*) malloc(sizeof(MmsServerIdentity));
+    identityInfo = (MmsServerIdentity*) GLOBAL_MALLOC(sizeof(MmsServerIdentity));
 
     identityInfo->vendorName = vendorName;
     identityInfo->modelName = modelName;

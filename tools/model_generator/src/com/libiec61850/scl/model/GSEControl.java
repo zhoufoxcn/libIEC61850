@@ -34,31 +34,47 @@ public class GSEControl {
     private int confRev = 1;
     private String appID;
     private boolean fixedOffs = false;
-    
+    private int minTime = -1;
+    private int maxTime = -1;
+
     public GSEControl(Node gseControlNode) throws SclParserException {
 
         this.name = ParserUtils.parseAttribute(gseControlNode, "name");
         this.desc = ParserUtils.parseAttribute(gseControlNode, "desc");
         this.dataSet = ParserUtils.parseAttribute(gseControlNode, "datSet");
-        
-        String confRevString = ParserUtils.parseAttribute(gseControlNode, "confRev");
-        
+
+        String confRevString = ParserUtils.parseAttribute(gseControlNode,
+                "confRev");
+
         if (confRevString != null)
             this.confRev = new Integer(confRevString);
-        
+
         this.appID = ParserUtils.parseAttribute(gseControlNode, "appID");
-        
-       Boolean fixedOffs = ParserUtils.parseBooleanAttribute(gseControlNode, "fixedOffs");
-       
-       if (fixedOffs != null)
-           this.fixedOffs = fixedOffs;
-       
-       String typeString = ParserUtils.parseAttribute(gseControlNode, "type");
-       
-       if (typeString != null)
-           if (!typeString.equals("GOOSE"))
-               throw new SclParserException(gseControlNode, "GSEControl of type " + typeString + " not supported!");
-           
+
+        Boolean fixedOffs = ParserUtils.parseBooleanAttribute(gseControlNode,
+                "fixedOffs");
+
+        if (fixedOffs != null)
+            this.fixedOffs = fixedOffs;
+
+        String minTimeStr = ParserUtils.parseAttribute(gseControlNode,
+                "minTime");
+        String maxTimeStr = ParserUtils.parseAttribute(gseControlNode,
+                "maxTime");
+
+        if (minTimeStr != null)
+            minTime = new Integer(minTimeStr);
+
+        if (maxTimeStr != null)
+            maxTime = new Integer(maxTimeStr);
+
+        String typeString = ParserUtils.parseAttribute(gseControlNode, "type");
+
+        if (typeString != null)
+            if (!typeString.equals("GOOSE"))
+                throw new SclParserException(gseControlNode,
+                        "GSEControl of type " + typeString + " not supported!");
+
     }
 
     public String getName() {
@@ -84,5 +100,13 @@ public class GSEControl {
     public boolean isFixedOffs() {
         return fixedOffs;
     }
+
+	public int getMinTime() {
+		return minTime;
+	}
+
+	public int getMaxTime() {
+		return maxTime;
+	}
     
 }

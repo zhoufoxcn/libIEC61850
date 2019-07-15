@@ -31,10 +31,43 @@
 
 #include "ber_encoder.h"
 
+AcseAuthenticationParameter
+AcseAuthenticationParameter_create()
+{
+    AcseAuthenticationParameter self = (AcseAuthenticationParameter)
+        GLOBAL_CALLOC(1, sizeof(struct sAcseAuthenticationParameter));
+
+    return self;
+}
+
+void
+AcseAuthenticationParameter_destroy(AcseAuthenticationParameter self)
+{
+    if (self->mechanism == ACSE_AUTH_PASSWORD)
+        if (self->value.password.octetString != NULL)
+            GLOBAL_FREEMEM(self->value.password.octetString);
+
+    GLOBAL_FREEMEM(self);
+}
+
+void
+AcseAuthenticationParameter_setPassword(AcseAuthenticationParameter self, char* password)
+{
+    self->value.password.octetString = (uint8_t*) StringUtils_copyString(password);
+    self->value.password.passwordLength = strlen(password);
+}
+
+void
+AcseAuthenticationParameter_setAuthMechanism(AcseAuthenticationParameter self, AcseAuthenticationMechanism mechanism)
+{
+    self->mechanism = mechanism;
+}
+
+
 IsoConnectionParameters
 IsoConnectionParameters_create()
 {
-    IsoConnectionParameters self = (IsoConnectionParameters) calloc(1, sizeof(struct sIsoConnectionParameters));
+    IsoConnectionParameters self = (IsoConnectionParameters) GLOBAL_CALLOC(1, sizeof(struct sIsoConnectionParameters));
 
     return self;
 }
@@ -42,8 +75,17 @@ IsoConnectionParameters_create()
 void
 IsoConnectionParameters_destroy(IsoConnectionParameters self)
 {
-    free(self);
+    GLOBAL_FREEMEM(self);
 }
+
+void
+IsoConnectionParameters_setTlsConfiguration(IsoConnectionParameters self, TLSConfiguration tlsConfig)
+{
+#if (CONFIG_MMS_SUPPORT_TLS == 1)
+    self->tlsConfiguration = tlsConfig;
+#endif
+}
+
 
 void
 IsoConnectionParameters_setAcseAuthenticationParameter(IsoConnectionParameters self,
@@ -53,14 +95,14 @@ IsoConnectionParameters_setAcseAuthenticationParameter(IsoConnectionParameters s
 }
 
 void
-IsoConnectionParameters_setTcpParameters(IsoConnectionParameters self, char* hostname, int tcpPort)
+IsoConnectionParameters_setTcpParameters(IsoConnectionParameters self, const char* hostname, int tcpPort)
 {
     self->hostname = hostname;
     self->tcpPort = tcpPort;
 }
 
 void
-IsoConnectionParameters_setRemoteApTitle(IsoConnectionParameters self, char* apTitle, int aeQualifier)
+IsoConnectionParameters_setRemoteApTitle(IsoConnectionParameters self, const char* apTitle, int aeQualifier)
 {
     if (apTitle == NULL)
         self->remoteApTitleLen = 0;
@@ -71,7 +113,7 @@ IsoConnectionParameters_setRemoteApTitle(IsoConnectionParameters self, char* apT
 }
 
 void
-IsoConnectionParameters_setRemoteAddresses(IsoConnectionParameters self, uint32_t pSelector, uint16_t sSelector, uint16_t tSelector)
+IsoConnectionParameters_setRemoteAddresses(IsoConnectionParameters self, uint32_t pSelector, SSelector sSelector, TSelector tSelector)
 {
     self->remotePSelector = pSelector;
     self->remoteSSelector = sSelector;
@@ -80,7 +122,7 @@ IsoConnectionParameters_setRemoteAddresses(IsoConnectionParameters self, uint32_
 
 
 void
-IsoConnectionParameters_setLocalApTitle(IsoConnectionParameters self, char* apTitle, int aeQualifier)
+IsoConnectionParameters_setLocalApTitle(IsoConnectionParameters self, const char* apTitle, int aeQualifier)
 {
     if (apTitle == NULL)
         self->localApTitleLen = 0;
@@ -91,7 +133,7 @@ IsoConnectionParameters_setLocalApTitle(IsoConnectionParameters self, char* apTi
 }
 
 void
-IsoConnectionParameters_setLocalAddresses(IsoConnectionParameters self, uint32_t pSelector, uint16_t sSelector, uint16_t tSelector)
+IsoConnectionParameters_setLocalAddresses(IsoConnectionParameters self, uint32_t pSelector, SSelector sSelector, TSelector tSelector)
 {
     self->localPSelector = pSelector;
     self->localSSelector = sSelector;

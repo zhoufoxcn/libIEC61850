@@ -1,7 +1,7 @@
 /*
  *  mms_association_service.c
  *
- *  Copyright 2013, 2014 Michael Zillgith
+ *  Copyright 2013-2018 Michael Zillgith
  *
  *  This file is part of libIEC61850.
  *
@@ -21,6 +21,7 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "mms_server_internal.h"
 
 /**********************************************************************************************
@@ -45,10 +46,14 @@
 #define MMS_SERVICE_DEFINE_NAMED_TYPE 0x02
 #define MMS_SERVICE_GET_NAMED_TYPE_ATTRIBUTES 0x01
 
+#define MMS_SERVICE_OBTAIN_FILE 0x02
+
+#define MMS_SERVICE_READ_JOURNAL 0x40
+
 #define MMS_SERVICE_FILE_OPEN 0x80
 #define MMS_SERVICE_FILE_READ 0x40
 #define MMS_SERVICE_FILE_CLOSE 0x20
-#define MMS_SERVICE_FILE_RENAME 0x01
+#define MMS_SERVICE_FILE_RENAME 0x10
 #define MMS_SERVICE_FILE_DELETE 0x08
 #define MMS_SERVICE_FILE_DIRECTORY 0x04
 #define MMS_SERVICE_UNSOLICITED_STATUS 0x02
@@ -56,50 +61,6 @@
 
 #define MMS_SERVICE_CONCLUDE 0x10
 #define MMS_SERVICE_CANCEL 0x08
-
-//TODO make dependent on stack configuration!
-/* servicesSupported MMS bitstring */
-static uint8_t servicesSupported[] =
-{
-        0x00
-#if MMS_STATUS_SERVICE == 1
-        | MMS_SERVICE_STATUS
-#endif
-        | MMS_SERVICE_GET_NAME_LIST
-#if MMS_IDENTIFY_SERVICE == 1
-        | MMS_SERVICE_IDENTIFY
-#endif
-        | MMS_SERVICE_READ
-        | MMS_SERVICE_WRITE
-        | MMS_SERVICE_GET_VARIABLE_ACCESS_ATTRIBUTES
-        ,
-        0x00
-        | MMS_SERVICE_DEFINE_NAMED_VARIABLE_LIST
-        | MMS_SERVICE_DELETE_NAMED_VARIABLE_LIST
-        | MMS_SERVICE_GET_NAMED_VARIABLE_LIST_ATTRIBUTES
-        ,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00
-#if MMS_FILE_SERVICE == 1
-        | MMS_SERVICE_FILE_OPEN
-        | MMS_SERVICE_FILE_READ
-        | MMS_SERVICE_FILE_CLOSE
-        | MMS_SERVICE_FILE_RENAME
-        | MMS_SERVICE_FILE_DELETE
-        | MMS_SERVICE_FILE_DIRECTORY
-#endif
-        | MMS_SERVICE_INFORMATION_REPORT
-        ,
-        0x00
-        | MMS_SERVICE_CONCLUDE
-        | MMS_SERVICE_CANCEL
-};
 
 /* negotiated parameter CBB */
 static uint8_t parameterCBB[] =
@@ -114,7 +75,7 @@ static uint8_t parameterCBB[] =
  *********************************************************************************************/
 
 static int
-encodeInitResponseDetail(uint8_t* buffer, int bufPos, bool encode)
+encodeInitResponseDetail(MmsServerConnection self, uint8_t* buffer, int bufPos, bool encode)
 {
     int initResponseDetailSize = 14 + 5 + 3;
 
@@ -127,6 +88,132 @@ encodeInitResponseDetail(uint8_t* buffer, int bufPos, bool encode)
 
     bufPos = BerEncoder_encodeBitString(0x81, 11, parameterCBB, buffer, bufPos);
 
+#if (CONFIG_MMS_SERVER_CONFIG_SERVICES_AT_RUNTIME == 1)
+
+    uint8_t servicesSupported[] =
+    {
+            0x00
+    #if (MMS_STATUS_SERVICE == 1)
+            | MMS_SERVICE_STATUS
+    #endif
+            | MMS_SERVICE_GET_NAME_LIST
+    #if (MMS_IDENTIFY_SERVICE == 1)
+            | MMS_SERVICE_IDENTIFY
+    #endif
+            | MMS_SERVICE_READ
+            | MMS_SERVICE_WRITE
+            | MMS_SERVICE_GET_VARIABLE_ACCESS_ATTRIBUTES
+            ,
+            0x00
+    #if ((MMS_DATA_SET_SERVICE == 1) && (MMS_GET_DATA_SET_ATTRIBUTES == 1))
+            | MMS_SERVICE_GET_NAMED_VARIABLE_LIST_ATTRIBUTES
+    #endif
+            ,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00
+            | MMS_SERVICE_INFORMATION_REPORT
+            ,
+            0x00
+            | MMS_SERVICE_CONCLUDE
+            | MMS_SERVICE_CANCEL
+    };
+
+
+    if (self->server->fileServiceEnabled) {
+
+#if (MMS_OBTAIN_FILE_SERVICE == 1)
+        servicesSupported[5] |= MMS_SERVICE_OBTAIN_FILE;
+#endif
+
+#if (MMS_FILE_SERVICE == 1)
+        servicesSupported[9] |= MMS_SERVICE_FILE_OPEN;
+        servicesSupported[9] |= MMS_SERVICE_FILE_READ;
+        servicesSupported[9] |= MMS_SERVICE_FILE_CLOSE;
+        servicesSupported[9] |= MMS_SERVICE_FILE_RENAME;
+        servicesSupported[9] |= MMS_SERVICE_FILE_DELETE;
+        servicesSupported[9] |= MMS_SERVICE_FILE_DIRECTORY;
+#endif /* (MMS_FILE_SERVICE == 1) */
+
+    }
+
+    if (self->server->dynamicVariableListServiceEnabled) {
+
+#if ((MMS_DATA_SET_SERVICE == 1) && (MMS_DYNAMIC_DATA_SETS == 1))
+        servicesSupported[1] |= MMS_SERVICE_DEFINE_NAMED_VARIABLE_LIST;
+        servicesSupported[1] |= MMS_SERVICE_DELETE_NAMED_VARIABLE_LIST;
+#endif
+
+    }
+
+    if (self->server->journalServiceEnabled) {
+#if (MMS_JOURNAL_SERVICE == 1)
+        servicesSupported[8] |= MMS_SERVICE_READ_JOURNAL;
+#endif
+    }
+
+
+#else
+    uint8_t servicesSupported[] =
+    {
+            0x00
+    #if (MMS_STATUS_SERVICE == 1)
+            | MMS_SERVICE_STATUS
+    #endif
+            | MMS_SERVICE_GET_NAME_LIST
+    #if (MMS_IDENTIFY_SERVICE == 1)
+            | MMS_SERVICE_IDENTIFY
+    #endif
+            | MMS_SERVICE_READ
+            | MMS_SERVICE_WRITE
+            | MMS_SERVICE_GET_VARIABLE_ACCESS_ATTRIBUTES
+            ,
+            0x00
+    #if ((MMS_DATA_SET_SERVICE == 1) && (MMS_DYNAMIC_DATA_SETS == 1))
+            | MMS_SERVICE_DEFINE_NAMED_VARIABLE_LIST
+            | MMS_SERVICE_DELETE_NAMED_VARIABLE_LIST
+    #endif
+    #if ((MMS_DATA_SET_SERVICE == 1) && (MMS_GET_DATA_SET_ATTRIBUTES == 1))
+            | MMS_SERVICE_GET_NAMED_VARIABLE_LIST_ATTRIBUTES
+    #endif
+            ,
+            0x00,
+            0x00,
+            0x00,
+            0x00
+    #if (MMS_OBTAIN_FILE_SERVICE == 1)
+            | MMS_SERVICE_OBTAIN_FILE
+    #endif
+            ,
+            0x00,
+            0x00,
+            0x00
+    #if (MMS_JOURNAL_SERVICE == 1)
+            | MMS_SERVICE_READ_JOURNAL
+    #endif
+            ,
+            0x00
+    #if (MMS_FILE_SERVICE == 1)
+            | MMS_SERVICE_FILE_OPEN
+            | MMS_SERVICE_FILE_READ
+            | MMS_SERVICE_FILE_CLOSE
+            | MMS_SERVICE_FILE_RENAME
+            | MMS_SERVICE_FILE_DELETE
+            | MMS_SERVICE_FILE_DIRECTORY
+    #endif
+            | MMS_SERVICE_INFORMATION_REPORT
+            ,
+            0x00
+            | MMS_SERVICE_CONCLUDE
+            | MMS_SERVICE_CANCEL
+    };
+#endif /* (CONFIG_MMS_SERVER_CONFIG_SERVICES_AT_RUNTIME == 1) */
+
     bufPos = BerEncoder_encodeBitString(0x82, 85, servicesSupported, buffer, bufPos);
 
     return bufPos;
@@ -134,7 +221,7 @@ encodeInitResponseDetail(uint8_t* buffer, int bufPos, bool encode)
 
 
 static int
-createInitiateResponse(MmsServerConnection* self, ByteBuffer* writeBuffer)
+createInitiateResponse(MmsServerConnection self, ByteBuffer* writeBuffer)
 {
     uint8_t* buffer = writeBuffer->buffer;
     int bufPos = 0;
@@ -146,7 +233,7 @@ createInitiateResponse(MmsServerConnection* self, ByteBuffer* writeBuffer)
     initiateResponseLength += 2 + BerEncoder_UInt32determineEncodedSize(self->maxServOutstandingCalled);
     initiateResponseLength += 2 + BerEncoder_UInt32determineEncodedSize(self->dataStructureNestingLevel);
 
-    initiateResponseLength += encodeInitResponseDetail(NULL, 0, false);
+    initiateResponseLength += encodeInitResponseDetail(self, NULL, 0, false);
 
     /* Initiate response pdu */
     bufPos = BerEncoder_encodeTL(0xa9, initiateResponseLength, buffer, bufPos);
@@ -159,7 +246,7 @@ createInitiateResponse(MmsServerConnection* self, ByteBuffer* writeBuffer)
 
     bufPos = BerEncoder_encodeUInt32WithTL(0x83, self->dataStructureNestingLevel, buffer, bufPos);
 
-    bufPos = encodeInitResponseDetail(buffer, bufPos, true);
+    bufPos = encodeInitResponseDetail(self, buffer, bufPos, true);
 
     writeBuffer->size = bufPos;
 
@@ -167,7 +254,7 @@ createInitiateResponse(MmsServerConnection* self, ByteBuffer* writeBuffer)
 }
 
 static bool
-parseInitiateRequestPdu(MmsServerConnection* self, uint8_t* buffer, int bufPos, int maxBufPos)
+parseInitiateRequestPdu(MmsServerConnection self, uint8_t* buffer, int bufPos, int maxBufPos)
 {
     self->maxPduSize = CONFIG_MMS_MAXIMUM_PDU_SIZE;
 
@@ -220,6 +307,9 @@ parseInitiateRequestPdu(MmsServerConnection* self, uint8_t* buffer, int bufPos, 
         case 0xa4: /* mms-init-request-detail */
             /* we ignore this */
             break;
+
+        default:
+        	break; /* Ignore unknown tags */
         }
 
         bufPos += length;
@@ -230,7 +320,7 @@ parseInitiateRequestPdu(MmsServerConnection* self, uint8_t* buffer, int bufPos, 
 
 void
 mmsServer_handleInitiateRequest (
-        MmsServerConnection* self,
+        MmsServerConnection self,
         uint8_t* buffer, int bufPos, int maxBufPos,
         ByteBuffer* response)
 {

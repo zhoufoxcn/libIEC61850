@@ -8,7 +8,7 @@
 #include "iec61850_server.h"
 #include "iso_server.h"
 #include "acse.h"
-#include "thread.h"
+#include "hal_thread.h"
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,10 +34,10 @@ void sigint_handler(int signalId)
 	running = 0;
 }
 
-void
+static void
 connectionIndicationHandler(IedServer server, ClientConnection connection, bool connected, void* parameter)
 {
-    char* clientAddress = ClientConnection_getPeerAddress(connection);
+    const char* clientAddress = ClientConnection_getPeerAddress(connection);
 
     if (connected) {
         printf("BeagleDemoServer: new client connection from %s\n", clientAddress);
@@ -62,6 +62,10 @@ performCheckHandler(void* parameter, MmsValue* ctlVal, bool test, bool interlock
         automaticOperationMode = false;
     }
 
+    /* test command not accepted if mode is "on" */
+    if (test)
+        return CONTROL_TEMPORARILY_UNAVAILABLE;
+
     /* If there is already another client that controls the device reject the control attempt */
     if (controllingClient == connection)
         return CONTROL_ACCEPTED;
@@ -69,41 +73,38 @@ performCheckHandler(void* parameter, MmsValue* ctlVal, bool test, bool interlock
         return CONTROL_TEMPORARILY_UNAVAILABLE;
 }
 
-void
+static void
 updateLED1stVal(bool newLedState, uint64_t timeStamp) {
     switchLED(LED1, newLedState);
 
+    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_t, timeStamp);
     IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_stVal, newLedState);
     IedServer_updateQuality(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_q, QUALITY_VALIDITY_GOOD | QUALITY_SOURCE_SUBSTITUTED);
-    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_t, timeStamp);
 }
 
-void
+static void
 updateLED2stVal(bool newLedState, uint64_t timeStamp) {
     switchLED(LED2, newLedState);
 
+    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_t, timeStamp);
     IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_stVal, newLedState);
     IedServer_updateQuality(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_q, QUALITY_VALIDITY_QUESTIONABLE | QUALITY_DETAIL_OSCILLATORY);
-    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_t, timeStamp);
 }
 
-void
+static void
 updateLED3stVal(bool newLedState, uint64_t timeStamp) {
     switchLED(LED3, newLedState);
 
+    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_t, timeStamp);
     IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_stVal, newLedState);
     IedServer_updateQuality(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_q, QUALITY_VALIDITY_GOOD);
-    IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_t, timeStamp);
 }
 
-bool
+static ControlHandlerResult
 controlHandlerForBinaryOutput(void* parameter, MmsValue* value, bool test)
 {
     if (test)
-        return true;
-
-    if (MmsValue_getType(value) != MMS_BOOLEAN)
-        return false;
+        return CONTROL_RESULT_OK;
 
     uint64_t timeStamp = Hal_getTimeInMs();
 
@@ -142,7 +143,63 @@ controlHandlerForBinaryOutput(void* parameter, MmsValue* value, bool test)
         IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_DPCSO1_t, timeStamp);
     }
 
-    return true;
+    return CONTROL_RESULT_OK;
+}
+
+static int ledOnTimeMs = 1000;
+static int ledOffTimeMs = 1000;
+static int32_t opCnt = 0;
+
+static ControlHandlerResult
+controlHandlerForInt32Controls(void* parameter, MmsValue* value, bool test)
+{
+	if (test)
+		return CONTROL_RESULT_OK;
+
+	if (parameter == IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs) {
+		int32_t newValue = MmsValue_toInt32(value);
+
+		opCnt = newValue;
+
+		uint64_t currentTime = Hal_getTimeInMs();
+
+    	IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs_t, currentTime);
+    	IedServer_updateInt32AttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs_stVal, opCnt);
+	}
+
+	return CONTROL_RESULT_OK;
+}
+
+
+
+static MmsDataAccessError
+int32WriteAccessHandler (DataAttribute* dataAttribute, MmsValue* value, ClientConnection connection, void* parameter)
+{
+    int newValue = MmsValue_toInt32(value);
+
+    /* Check if value is inside of valid range */
+    if (newValue < 0)
+        return DATA_ACCESS_ERROR_OBJECT_VALUE_INVALID;
+
+    if (dataAttribute == IEDMODEL_GenericIO_TIM_GAPC1_OpDlTmms_setVal) {
+
+        printf("New value for TIM_GAPC1.OpDlTmms.setVal = %i\n", newValue);
+
+        ledOffTimeMs = newValue;
+
+        return DATA_ACCESS_ERROR_SUCCESS;
+    }
+
+    if (dataAttribute == IEDMODEL_GenericIO_TIM_GAPC1_RsDlTmms_setVal) {
+
+        printf("New value for TIM_GAPC1.RsDlTmms.setVal = %i\n", newValue);
+
+        ledOnTimeMs = newValue;
+
+        return DATA_ACCESS_ERROR_SUCCESS;
+    }
+
+    return DATA_ACCESS_ERROR_OBJECT_ACCESS_DENIED;
 }
 
 
@@ -152,7 +209,7 @@ int main(int argc, char** argv) {
 
 	iedServer = IedServer_create(&iedModel);
 
-	/* Set callback handlers */
+	/* Set control callback handlers */
 	IedServer_setConnectionIndicationHandler(iedServer, (IedConnectionIndicationHandler) connectionIndicationHandler, NULL);
 
 	IedServer_setPerformCheckHandler(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1,
@@ -180,10 +237,21 @@ int main(int argc, char** argv) {
 	            IEDMODEL_GenericIO_GGIO1_DPCSO1);
 
 
-	/* Initialize process values */
+	IedServer_setControlHandler(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs, (ControlHandler) controlHandlerForInt32Controls,
+			IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs);
 
+	/* Initialize process values */
 	MmsValue* DPCSO1_stVal = IedServer_getAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_DPCSO1_stVal);
 	MmsValue_setBitStringFromInteger(DPCSO1_stVal, 1); /* set DPC to OFF */
+
+	/* Intitalize setting values */
+	IedServer_updateInt32AttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpDlTmms_setVal, ledOffTimeMs);
+	IedServer_updateInt32AttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_RsDlTmms_setVal, ledOnTimeMs);
+
+	/* Set callback handler for settings */
+	IedServer_handleWriteAccess(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpDlTmms_setVal, int32WriteAccessHandler, NULL);
+	IedServer_handleWriteAccess(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_RsDlTmms_setVal, int32WriteAccessHandler, NULL);
+
 
     /* MMS server will be instructed to start listening to client connections. */
     IedServer_start(iedServer, 102);
@@ -209,9 +277,20 @@ int main(int argc, char** argv) {
 
 	    if (automaticOperationMode) {
 	        if (nextLedToggleTime <= currentTime) {
-	            nextLedToggleTime = currentTime + 1000;
+
+
+	        	if (ledStateValue)
+	        		nextLedToggleTime = currentTime + ledOffTimeMs;
+	        	else
+	        		nextLedToggleTime = currentTime + ledOnTimeMs;
 
 	            ledStateValue = !ledStateValue;
+
+	            if (ledStateValue) {
+	            	opCnt++;
+	            	IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs_t, currentTime);
+	            	IedServer_updateInt32AttributeValue(iedServer, IEDMODEL_GenericIO_TIM_GAPC1_OpCntRs_stVal, opCnt);
+	            }
 
 	            updateLED1stVal(ledStateValue, currentTime);
 	            updateLED2stVal(ledStateValue, currentTime);

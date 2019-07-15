@@ -23,8 +23,6 @@
 
 #include "libiec61850_platform_includes.h"
 #include "ber_encoder.h"
-#include "platform_endian.h"
-
 
 int
 BerEncoder_encodeLength(uint32_t length, uint8_t* buffer, int bufPos)
@@ -36,10 +34,17 @@ BerEncoder_encodeLength(uint32_t length, uint8_t* buffer, int bufPos)
         buffer[bufPos++] = 0x81;
         buffer[bufPos++] = (uint8_t) length;
     }
-    else {
+    else if (length < 65535) {
         buffer[bufPos++] = 0x82;
 
         buffer[bufPos++] = length / 256;
+        buffer[bufPos++] = length % 256;
+    }
+    else {
+        buffer[bufPos++] = 0x83;
+
+        buffer[bufPos++] = length / 0x10000;
+        buffer[bufPos++] = (length & 0xffff) / 0x100;
         buffer[bufPos++] = length % 256;
     }
 
@@ -70,7 +75,7 @@ BerEncoder_encodeBoolean(uint8_t tag, bool value, uint8_t* buffer, int bufPos)
 }
 
 int
-BerEncoder_encodeStringWithTag(uint8_t tag, char* string, uint8_t* buffer, int bufPos)
+BerEncoder_encodeStringWithTag(uint8_t tag, const char* string, uint8_t* buffer, int bufPos)
 {
     buffer[bufPos++] = tag;
 
@@ -189,6 +194,7 @@ BerEncoder_revertByteOrder(uint8_t* octets, const int size)
 int
 BerEncoder_compressInteger(uint8_t* integer, int originalSize)
 {
+
     uint8_t* integerEnd = integer + originalSize - 1;
     uint8_t* bytePosition;
 
@@ -243,6 +249,33 @@ BerEncoder_encodeUInt32(uint32_t value, uint8_t* buffer, int bufPos)
 #endif
 
     int size = BerEncoder_compressInteger(valueBuffer, 5);
+
+    for (i = 0; i < size; i++) {
+        buffer[bufPos++] = valueBuffer[i];
+    }
+
+    return bufPos;
+}
+
+int
+BerEncoder_encodeInt32(int32_t value, uint8_t* buffer, int bufPos)
+{
+    uint8_t* valueArray = (uint8_t*) &value;
+    uint8_t valueBuffer[4];
+
+    int i;
+
+#if (ORDER_LITTLE_ENDIAN == 1)
+    for (i = 0; i < 4; i++) {
+        valueBuffer[3 - i] = valueArray[i];
+    }
+#else
+    for (i = 0; i < 4; i++) {
+        valueBuffer[i] = valueArray[i];
+    }
+#endif
+
+    int size = BerEncoder_compressInteger(valueBuffer, 4);
 
     for (i = 0; i < size; i++) {
         buffer[bufPos++] = valueBuffer[i];
@@ -336,12 +369,14 @@ BerEncoder_determineLengthSize(uint32_t length)
         return 1;
     if (length < 256)
         return 2;
-    else
+    if (length < 65536)
         return 3;
+    else
+        return 4;
 }
 
 int
-BerEncoder_determineEncodedStringSize(char* string)
+BerEncoder_determineEncodedStringSize(const char* string)
 {
     if (string != NULL) {
         int size = 1;
@@ -359,13 +394,13 @@ BerEncoder_determineEncodedStringSize(char* string)
 }
 
 int
-BerEncoder_encodeOIDToBuffer(char* oidString, uint8_t* buffer, int maxBufLen)
+BerEncoder_encodeOIDToBuffer(const char* oidString, uint8_t* buffer, int maxBufLen)
 {
     int encodedBytes = 0;
 
     int x = atoi(oidString);
 
-    char* separator = strchr(oidString, '.');
+    const char* separator = strchr(oidString, '.');
 
     if (separator == NULL) return 0;
 

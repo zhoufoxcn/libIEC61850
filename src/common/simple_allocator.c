@@ -1,7 +1,7 @@
 /*
  *  simple_allocator.c
  *
- *  Copyright 2013 Michael Zillgith
+ *  Copyright 2013, 2014 Michael Zillgith
  *
  *  This file is part of libIEC61850.
  *
@@ -21,9 +21,9 @@
  *  See COPYING file for the complete license text.
  */
 
-#include <stdlib.h>
-
+#include "libiec61850_platform_includes.h"
 #include "simple_allocator.h"
+#include "stack_config.h"
 
 void
 MemoryAllocator_init(MemoryAllocator* self, char* memoryBlock, int size)
@@ -33,11 +33,29 @@ MemoryAllocator_init(MemoryAllocator* self, char* memoryBlock, int size)
     self->size = size;
 }
 
+int
+MemoryAllocator_getAlignedSize(int size)
+{
+#if (CONFIG_IEC61850_FORCE_MEMORY_ALIGNMENT == 1)
+    if ((size % sizeof(void*)) > 0)
+        return sizeof(void*) * ((size + sizeof(void*) - 1) / sizeof(void*));
+    else
+        return size;
+#else
+    return size;
+#endif
+}
+
 char*
 MemoryAllocator_allocate(MemoryAllocator* self, int size)
 {
-    if (((self->currentPtr - self->memoryBlock) + size) <= self->size)
-        return (self->currentPtr += size);
+    size = MemoryAllocator_getAlignedSize(size);
+
+    if (((self->currentPtr - self->memoryBlock) + size) <= self->size) {
+        char* ptr = self->currentPtr;
+        self->currentPtr += size;
+        return ptr;
+    }
     else
         return NULL;
 }

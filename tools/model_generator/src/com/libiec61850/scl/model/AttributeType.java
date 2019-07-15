@@ -55,7 +55,10 @@ public enum AttributeType {
     GENERIC_BITSTRING(26), 
     CONSTRUCTED(27), 
     ENTRY_TIME(28), 
-    PHYCOMADDR(29);
+    PHYCOMADDR(29),
+    CURRENCY(30),
+    OPTFLDS(31),
+    TRGOPS(32);
     
     private int intValue;
     
@@ -107,6 +110,8 @@ public enum AttributeType {
             return QUALITY;
         else if (typeString.equals("Timestamp"))
             return TIMESTAMP;
+        else if (typeString.equals("Currency"))
+            return CURRENCY;
         else if (typeString.equals("VisString32"))
             return VISIBLE_STRING_32;
         else if (typeString.equals("VisString64"))
@@ -122,9 +127,9 @@ public enum AttributeType {
         else if (typeString.equals("Unicode255"))
             return UNICODE_STRING_255;
         else if (typeString.equals("OptFlds"))
-            return GENERIC_BITSTRING;
+            return OPTFLDS;
         else if (typeString.equals("TrgOps"))
-            return GENERIC_BITSTRING;
+            return TRGOPS;
         else if (typeString.equals("EntryID"))
             return OCTET_STRING_8;
         else if (typeString.equals("EntryTime"))

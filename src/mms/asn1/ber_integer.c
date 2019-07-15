@@ -22,7 +22,6 @@
  */
 
 #include "libiec61850_platform_includes.h"
-#include "platform_endian.h"
 #include "ber_integer.h"
 #include "ber_encoder.h"
 
@@ -47,7 +46,7 @@ setIntegerValue(Asn1PrimitiveValue* self, uint8_t* valueBuffer, int bufferSize)
 Asn1PrimitiveValue*
 BerInteger_createInt32()
 {
-    return Asn1PrimitiveValue_create(4);
+    return Asn1PrimitiveValue_create(5);
 }
 
 Asn1PrimitiveValue*
@@ -125,7 +124,23 @@ BerInteger_setUint32(Asn1PrimitiveValue* self, uint32_t value)
     uint32_t valueCopy = value;
     uint8_t* valueBuffer = (uint8_t*) &valueCopy;
 
-    return setIntegerValue(self, valueBuffer, sizeof(value));
+    uint8_t byteBuffer[5];
+
+    int i;
+
+#if (ORDER_LITTLE_ENDIAN == 1)
+    byteBuffer[4] = 0;
+
+    for (i = 0; i < 4; i++)
+        byteBuffer[i] = valueBuffer[i];
+#else
+    byteBuffer[0] = 0;
+
+    for (i = 0; i < 4; i++)
+        byteBuffer[i + 1] = valueBuffer[i];
+#endif /* (ORDER_LITTLE_ENDIAN == 1) */
+
+    return setIntegerValue(self, byteBuffer, 5);
 }
 
 Asn1PrimitiveValue*
@@ -140,7 +155,7 @@ BerInteger_createFromUint32(uint32_t value)
 Asn1PrimitiveValue*
 BerInteger_createInt64()
 {
-    return Asn1PrimitiveValue_create(64);
+    return Asn1PrimitiveValue_create(9);
 }
 
 int
@@ -185,7 +200,7 @@ BerInteger_toInt32(Asn1PrimitiveValue* self, int32_t* nativeValue)
 int /* 1 - if conversion is possible, 0 - out of range */
 BerInteger_toUint32(Asn1PrimitiveValue* self, uint32_t* nativeValue)
 {
-    if (self->size < 5) {
+    if (self->size < 6) {
         uint8_t* buf = self->octets;
         int i;
 

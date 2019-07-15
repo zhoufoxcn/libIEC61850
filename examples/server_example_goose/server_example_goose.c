@@ -7,7 +7,7 @@
  */
 
 #include "iec61850_server.h"
-#include "thread.h" /* for Thread_sleep() */
+#include "hal_thread.h" /* for Thread_sleep() */
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,22 +28,39 @@ void sigint_handler(int signalId)
 void
 controlHandlerForBinaryOutput(void* parameter, MmsValue* value)
 {
-    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO1)
+    uint64_t timestamp = Hal_getTimeInMs();
+
+    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO1) {
+        IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_t, timestamp);
         IedServer_updateAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO1_stVal, value);
+    }
 
-    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO2)
+    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO2) {
+        IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_t, timestamp);
         IedServer_updateAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO2_stVal, value);
+    }
 
-    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO3)
+    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO3) {
+        IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_t, timestamp);
         IedServer_updateAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO3_stVal, value);
+    }
 
-    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO4)
+    if (parameter == IEDMODEL_GenericIO_GGIO1_SPCSO4) {
+        IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO4_t, timestamp);
         IedServer_updateAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_SPCSO4_stVal, value);
+    }
 }
 
 int main(int argc, char** argv) {
 
 	iedServer = IedServer_create(&iedModel);
+
+	if (argc > 1) {
+		char* ethernetIfcID = argv[1];
+
+		printf("Using GOOSE interface: %s\n", ethernetIfcID);
+		IedServer_setGooseInterfaceId(iedServer, ethernetIfcID);
+	}
 
 	/* MMS server will be instructed to start listening to client connections. */
 	IedServer_start(iedServer, 102);
@@ -73,8 +90,20 @@ int main(int argc, char** argv) {
 
 	signal(SIGINT, sigint_handler);
 
+	float anIn1 = 0.f;
+
 	while (running) {
-		Thread_sleep(1);
+
+	    IedServer_lockDataModel(iedServer);
+
+        IedServer_updateUTCTimeAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_AnIn1_t, Hal_getTimeInMs());
+	    IedServer_updateFloatAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_AnIn1_mag_f, anIn1);
+
+	    IedServer_unlockDataModel(iedServer);
+
+	    anIn1 += 0.1;
+
+		Thread_sleep(1000);
 	}
 
 	/* stop MMS server - close TCP server socket and all client sockets */

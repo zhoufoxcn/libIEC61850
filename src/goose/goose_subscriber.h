@@ -1,7 +1,7 @@
 /*
  *  goose_subscriber.h
  *
- *  Copyright 2013 Michael Zillgith
+ *  Copyright 2013, 2014 Michael Zillgith
  *
  *  This file is part of libIEC61850.
  *
@@ -25,6 +25,10 @@
 #define GOOSE_SUBSCRIBER_H_
 
 #include "libiec61850_common_api.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * \defgroup goose_api_group IEC 61850 GOOSE subscriber API
@@ -57,7 +61,7 @@ typedef void (*GooseListener)(GooseSubscriber subscriber, void* parameter);
  * IedConnection_getDataSet() method before.
  *
  * If NULL is given as dataSetValues it will be created the first time when a appropriate GOOSE message
- * is recevied.
+ * is received.
  *
  * \param goCbRef a string containing the object reference of the GOOSE Control Block (GoCB) in MMS notation the
  *        GOOSE publisher uses.
@@ -65,6 +69,9 @@ typedef void (*GooseListener)(GooseSubscriber subscriber, void* parameter);
  */
 GooseSubscriber
 GooseSubscriber_create(char* goCbRef, MmsValue* dataSetValues);
+
+//char*
+//GooseSubscriber_getGoCbRef(GooseSubscriber self);
 
 /**
  * \brief set the APPID used by the subscriber to filter relevant messages.
@@ -78,30 +85,14 @@ void
 GooseSubscriber_setAppId(GooseSubscriber self, uint16_t appId);
 
 /**
- * \brief set the ethernet interface that should be used.
+ * \brief Check if subscriber state is valid
  *
- * \param self GooseSubscriber instance to operate on.
- * \param interfaceId the id of the interface (e.g. a network device name like eth0
- *        for linux or a numerical index for windows)
- */
-void
-GooseSubscriber_setInterfaceId(GooseSubscriber self, char* interfaceId);
-
-/**
- * \brief Start listening to GOOSE messages
+ * A GOOSE subscriber is valid if TimeAllowedToLive timeout is not elapsed and GOOSE
+ * message were received with correct state and sequence ID.
  *
- * \param self GooseSubscriber instance to operate on.
  */
-void
-GooseSubscriber_subscribe(GooseSubscriber self);
-
-/**
- * \brief Stop listening to GOOSE messages
- *
- * \param self GooseSubscriber instance to operate on.
- */
-void
-GooseSubscriber_unsubscribe(GooseSubscriber self);
+bool
+GooseSubscriber_isValid(GooseSubscriber self);
 
 void
 GooseSubscriber_destroy(GooseSubscriber self);
@@ -116,26 +107,105 @@ GooseSubscriber_destroy(GooseSubscriber self);
 void
 GooseSubscriber_setListener(GooseSubscriber self, GooseListener listener, void* parameter);
 
+/**
+ * \brief return the state number (stNum) of the last received GOOSE message.
+ *
+ * The state number is increased if any of the values in the GOOSE data set changed due to a valid trigger condition
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the state number of the last received GOOSE message
+ */
 uint32_t
 GooseSubscriber_getStNum(GooseSubscriber self);
 
+/**
+ * \brief return the sequence number (sqNum) of the last received GOOSE message.
+ *
+ * The sequence number is increased for every consecutive GOOSE message without state change. When a state change occurs (stNum is increased)
+ * then the sequence number (sqNum) will be reset.
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the sequence number of the last received GOOSE message
+ */
 uint32_t
 GooseSubscriber_getSqNum(GooseSubscriber self);
 
+/**
+ * \brief returns the test flag of the last received GOOSE message
+ *
+ * IMPORTANT: Goose messages with test=TRUE have to be ignored to be standard compliant!
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the state of the test flag of the last received GOOSE message.
+ */
 bool
 GooseSubscriber_isTest(GooseSubscriber self);
 
+/**
+ * \brief returns the confRev value of the last received GOOSE message
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the confRev value of the last received GOOSE message. If the message does not contain such
+ *         a value the result is always 0
+ */
+uint32_t
+GooseSubscriber_getConfRev(GooseSubscriber self);
+
+/**
+ * \brief returns the value of the ndsCom (needs commission) flag of the last received GOOSE message.
+ *
+ * IMPORTANT: Goose messages with ndsCom=TRUE have to be ignored to be standard compliant!
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the state of the ndsCom flag of the last received GOOSE message.
+ *
+ */
 bool
 GooseSubscriber_needsCommission(GooseSubscriber self);
 
+/**
+ * \brief Get the TimeAllowedToLive value of the last received message.
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the TimeAllowedToLive value of the last received GOOSE message in milliseconds.
+ */
 uint32_t
 GooseSubscriber_getTimeAllowedToLive(GooseSubscriber self);
 
+/**
+ * \brief Get the timestamp of the last received message.
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return the timestamp value of the last received GOOSE message in milliseconds since epoch (1.1.1970 UTC).
+ */
 uint64_t
 GooseSubscriber_getTimestamp(GooseSubscriber self);
 
+/**
+ * \brief get the data set values received with the last report
+ *
+ * Note: To prevent data corruption. The MmsValue instance received should
+ * only be used inside of the callback function, when the GOOSE receiver is
+ * running in a separate thread.
+ *
+ * \param self GooseSubscriber instance to operate on.
+ *
+ * \return MmsValue instance of the report data set
+ */
 MmsValue*
 GooseSubscriber_getDataSetValues(GooseSubscriber self);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /**@}*/
 

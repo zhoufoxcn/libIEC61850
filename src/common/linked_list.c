@@ -1,7 +1,7 @@
 /*
  *  linked_list.c
  *
- *  Copyright 2013 Michael Zillgith
+ *  Copyright 2013, 2014 Michael Zillgith
  *
  *	This file is part of libIEC61850.
  *
@@ -38,7 +38,7 @@ LinkedList_create()
 {
     LinkedList newList;
 
-    newList = (LinkedList) malloc(sizeof(struct sLinkedList));
+    newList = (LinkedList) GLOBAL_MALLOC(sizeof(struct sLinkedList));
     newList->data = NULL;
     newList->next = NULL;
 
@@ -57,9 +57,11 @@ LinkedList_destroyDeep(LinkedList list, LinkedListValueDeleteFunction valueDelet
     do {
         currentElement = nextElement;
         nextElement = currentElement->next;
+
         if (currentElement->data != NULL)
             valueDeleteFunction(currentElement->data);
-        free(currentElement);
+
+        GLOBAL_FREEMEM(currentElement);
     }
     while (nextElement != NULL);
 }
@@ -67,7 +69,7 @@ LinkedList_destroyDeep(LinkedList list, LinkedListValueDeleteFunction valueDelet
 void
 LinkedList_destroy(LinkedList list)
 {
-    LinkedList_destroyDeep(list, free);
+    LinkedList_destroyDeep(list, Memory_free);
 }
 
 /**
@@ -82,7 +84,7 @@ LinkedList_destroyStatic(LinkedList list)
     do {
         currentElement = nextElement;
         nextElement = currentElement->next;
-        free(currentElement);
+        GLOBAL_FREEMEM(currentElement);
     }
     while (nextElement != NULL);
 }
@@ -114,6 +116,21 @@ LinkedList_add(LinkedList list, void* data)
 }
 
 bool
+LinkedList_contains(LinkedList list, void* data)
+{
+    LinkedList currentElement = list->next;
+
+    while (currentElement != NULL) {
+        if (currentElement->data == data)
+            return true;
+
+        currentElement = currentElement->next;
+    }
+
+    return false;
+}
+
+bool
 LinkedList_remove(LinkedList list, void* data)
 {
     LinkedList lastElement = list;
@@ -123,7 +140,7 @@ LinkedList_remove(LinkedList list, void* data)
     while (currentElement != NULL) {
         if (currentElement->data == data) {
             lastElement->next = currentElement->next;
-            free(currentElement);
+            GLOBAL_FREEMEM(currentElement);
             return true;
         }
 
@@ -149,7 +166,7 @@ LinkedList_insertAfter(LinkedList list, void* data)
     return newElement;
 }
 
-LinkedList inline
+LinkedList
 LinkedList_getNext(LinkedList list)
 {
     return list->next;

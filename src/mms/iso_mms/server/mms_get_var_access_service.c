@@ -21,6 +21,7 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "mms_server_internal.h"
 
 #if (MMS_GET_VARIABLE_ACCESS_ATTRIBUTES == 1)
@@ -42,7 +43,7 @@ createTypeSpecification (
 				(long) namedVariable->typeSpec.array.elementCount);
 
 		typeSpec->choice.array.packed = NULL;
-		typeSpec->choice.array.elementType = (TypeSpecification_t*) calloc(1, sizeof(TypeSpecification_t));
+		typeSpec->choice.array.elementType = (TypeSpecification_t*) GLOBAL_CALLOC(1, sizeof(TypeSpecification_t));
 
 		createTypeSpecification(namedVariable->typeSpec.array.elementTypeSpec,
 				typeSpec->choice.array.elementType);
@@ -57,26 +58,26 @@ createTypeSpecification (
 		typeSpec->choice.structure.components.list.size = componentCount;
 
 		typeSpec->choice.structure.components.list.array
-			= (StructComponent_t**) calloc(componentCount, sizeof(StructComponent_t*));
+			= (StructComponent_t**) GLOBAL_CALLOC(componentCount, sizeof(StructComponent_t*));
 
 		int i;
 
 		for (i = 0; i < componentCount; i++) {
 
 			typeSpec->choice.structure.components.list.array[i] = 
-					(StructComponent_t*) calloc(1, sizeof(StructComponent_t));
+					(StructComponent_t*) GLOBAL_CALLOC(1, sizeof(StructComponent_t));
 
 			typeSpec->choice.structure.components.list.array[i]->componentName =
-					(Identifier_t*) calloc(1, sizeof(Identifier_t));
+					(Identifier_t*) GLOBAL_CALLOC(1, sizeof(Identifier_t));
 
 			typeSpec->choice.structure.components.list.array[i]->componentName->buf =
-			        (uint8_t*) copyString(namedVariable->typeSpec.structure.elements[i]->name);
+			        (uint8_t*) StringUtils_copyString(namedVariable->typeSpec.structure.elements[i]->name);
 
 			typeSpec->choice.structure.components.list.array[i]->componentName->size =
 					strlen(namedVariable->typeSpec.structure.elements[i]->name);
 
 			typeSpec->choice.structure.components.list.array[i]->componentType =
-					(TypeSpecification_t*) calloc(1, sizeof(TypeSpecification_t));
+					(TypeSpecification_t*) GLOBAL_CALLOC(1, sizeof(TypeSpecification_t));
 
 			createTypeSpecification(namedVariable->typeSpec.structure.elements[i],
 					typeSpec->choice.structure.components.list.array[i]->componentType);
@@ -133,7 +134,7 @@ createTypeSpecification (
 			break;
 		default:
 			if (DEBUG_MMS_SERVER) 
-                            printf("MMS-SERVER: Unsupported type %i!\n", namedVariable->type);
+			    printf("MMS-SERVER: Unsupported type %i!\n", namedVariable->type);
 			return -1;
 			break;
 		}
@@ -151,19 +152,19 @@ freeTypeSpecRecursive(TypeSpecification_t* typeSpec) {
 		int i;
 
 		for (i = 0; i < elementCount; i++) {
-		    free(typeSpec->choice.structure.components.list.array[i]->componentName->buf);
-			free(typeSpec->choice.structure.components.list.array[i]->componentName);
+		    GLOBAL_FREEMEM(typeSpec->choice.structure.components.list.array[i]->componentName->buf);
+			GLOBAL_FREEMEM(typeSpec->choice.structure.components.list.array[i]->componentName);
 			freeTypeSpecRecursive(typeSpec->choice.structure.components.list.array[i]->componentType);
-			free(typeSpec->choice.structure.components.list.array[i]->componentType);
-			free(typeSpec->choice.structure.components.list.array[i]);
+			GLOBAL_FREEMEM(typeSpec->choice.structure.components.list.array[i]->componentType);
+			GLOBAL_FREEMEM(typeSpec->choice.structure.components.list.array[i]);
 		}
 
-		free(typeSpec->choice.structure.components.list.array);
+		GLOBAL_FREEMEM(typeSpec->choice.structure.components.list.array);
 	}
 	else if (typeSpec->present == TypeSpecification_PR_array) {
-		free(typeSpec->choice.array.numberOfElements.buf);
+		GLOBAL_FREEMEM(typeSpec->choice.array.numberOfElements.buf);
 		freeTypeSpecRecursive(typeSpec->choice.array.elementType);
-		free(typeSpec->choice.array.elementType);
+		GLOBAL_FREEMEM(typeSpec->choice.array.elementType);
 	}
 }
 
@@ -176,35 +177,35 @@ deleteVariableAccessAttributesResponse(
 
 		int i;
 		for (i = 0; i < count; i++) {
-		    free(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]->componentName->buf);
-			free(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]->componentName);
+		    GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]->componentName->buf);
+			GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]->componentName);
 			TypeSpecification_t* typeSpec =
 					getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]->componentType;
 			freeTypeSpecRecursive(typeSpec);
-			free(typeSpec);
-			free(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]);
+			GLOBAL_FREEMEM(typeSpec);
+			GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.structure.components.list.array[i]);
 		}
 
-		free(getVarAccessAttr->typeSpecification.choice.structure.components.list.array);
+		GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.structure.components.list.array);
 
 		getVarAccessAttr->typeSpecification.choice.structure.components.list.array = NULL;
 		getVarAccessAttr->typeSpecification.choice.structure.components.list.count = 0;
 		getVarAccessAttr->typeSpecification.choice.structure.components.list.size =	0;
 	} else if (getVarAccessAttr->typeSpecification.present == TypeSpecification_PR_array) {
-		free(getVarAccessAttr->typeSpecification.choice.array.numberOfElements.buf);
+		GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.array.numberOfElements.buf);
 		getVarAccessAttr->typeSpecification.choice.array.numberOfElements.buf = NULL;
 		getVarAccessAttr->typeSpecification.choice.array.numberOfElements.size = 0;
 		freeTypeSpecRecursive(getVarAccessAttr->typeSpecification.choice.array.elementType);
 
-		free(getVarAccessAttr->typeSpecification.choice.array.elementType);
+		GLOBAL_FREEMEM(getVarAccessAttr->typeSpecification.choice.array.elementType);
 
 		getVarAccessAttr->typeSpecification.choice.array.elementType = NULL;
 	}
 }
 
-static int
+static void
 createVariableAccessAttributesResponse(
-		MmsServerConnection* connection,
+		MmsServerConnection connection,
 		char* domainId,
 		char* nameId,
 		int invokeId,
@@ -212,18 +213,34 @@ createVariableAccessAttributesResponse(
 {
 	MmsDevice* device = MmsServer_getDevice(connection->server);
 
-	MmsDomain* domain = MmsDevice_getDomain(device, domainId);
+	MmsVariableSpecification* namedVariable = NULL;
 
-	if (domain == NULL) {
-		if (DEBUG_MMS_SERVER) printf("mms_server: domain %s not known\n", domainId);
-		return -1;
+	if (domainId != NULL) {
+	    MmsDomain* domain = MmsDevice_getDomain(device, domainId);
+
+	    if (domain == NULL) {
+	        if (DEBUG_MMS_SERVER) printf("MMS_SERVER: domain %s not known\n", domainId);
+
+	        mmsMsg_createServiceErrorPdu(invokeId, response,
+	                              MMS_ERROR_ACCESS_OBJECT_NON_EXISTENT);
+	        goto exit_function;
+	    }
+
+	    namedVariable = MmsDomain_getNamedVariable(domain, nameId);
 	}
+#if (CONFIG_MMS_SUPPORT_VMD_SCOPE_NAMED_VARIABLES == 1)
+	else
+	    namedVariable = MmsDevice_getNamedVariable(device, nameId);
+#endif /* (CONFIG_MMS_SUPPORT_VMD_SCOPE_NAMED_VARIABLES == 1) */
 
-	MmsVariableSpecification* namedVariable = MmsDomain_getNamedVariable(domain, nameId);
 
 	if (namedVariable == NULL) {
-		if (DEBUG_MMS_SERVER) printf("mms_server: named variable %s not known\n", nameId);
-		return -1;
+		if (DEBUG_MMS_SERVER) printf("MMS_SERVER: named variable %s not known\n", nameId);
+
+		mmsMsg_createServiceErrorPdu(invokeId, response,
+		                          MMS_ERROR_ACCESS_OBJECT_NON_EXISTENT);
+
+		goto exit_function;
 	}
 
 	MmsPdu_t* mmsPdu = mmsServer_createConfirmedResponse(invokeId);
@@ -249,22 +266,23 @@ createVariableAccessAttributesResponse(
         if (DEBUG_MMS_SERVER)
             printf("MMS getVariableAccessAttributes: message to large! send error PDU!\n");
 
-        mmsServer_createConfirmedErrorPdu(invokeId, response,
+        mmsMsg_createServiceErrorPdu(invokeId, response,
                       MMS_ERROR_SERVICE_OTHER);
 
-        return 0;
+        goto exit_function;
 	}
 
 	deleteVariableAccessAttributesResponse(getVarAccessAttr);
 
 	asn_DEF_MmsPdu.free_struct(&asn_DEF_MmsPdu, mmsPdu, 0);
 
-	return 0;
+exit_function:
+	return;
 }
 
 int
 mmsServer_handleGetVariableAccessAttributesRequest(
-		MmsServerConnection* connection,
+		MmsServerConnection connection,
 		uint8_t* buffer, int bufPos, int maxBufPos,
 		uint32_t invokeId,
 		ByteBuffer* response)
@@ -284,15 +302,30 @@ mmsServer_handleGetVariableAccessAttributesRequest(
 				Identifier_t domainId = request->choice.name.choice.domainspecific.domainId;
 				Identifier_t nameId = request->choice.name.choice.domainspecific.itemId;
 
-				char* domainIdStr = createStringFromBuffer(domainId.buf, domainId.size);
-				char* nameIdStr = createStringFromBuffer(nameId.buf, nameId.size);
-				if (DEBUG_MMS_SERVER) printf("getVariableAccessAttributes domainId: %s nameId: %s\n", domainIdStr, nameIdStr);
+				char* domainIdStr = StringUtils_createStringFromBuffer(domainId.buf, domainId.size);
+				char* nameIdStr = StringUtils_createStringFromBuffer(nameId.buf, nameId.size);
+
+				if (DEBUG_MMS_SERVER)
+				    printf("MMS_SERVER: getVariableAccessAttributes domainId: %s nameId: %s\n", domainIdStr, nameIdStr);
 
 				createVariableAccessAttributesResponse(connection, domainIdStr, nameIdStr, invokeId, response);
 
-				free(domainIdStr);
-				free(nameIdStr);
+				GLOBAL_FREEMEM(domainIdStr);
+				GLOBAL_FREEMEM(nameIdStr);
 			}
+#if (CONFIG_MMS_SUPPORT_VMD_SCOPE_NAMED_VARIABLES == 1)
+			else if (request->choice.name.present == ObjectName_PR_vmdspecific) {
+			    Identifier_t nameId = request->choice.name.choice.vmdspecific;
+
+			    char* nameIdStr = StringUtils_createStringFromBuffer(nameId.buf, nameId.size);
+
+			    if (DEBUG_MMS_SERVER) printf("MMS_SERVER: getVariableAccessAttributes (VMD specific) nameId: %s\n", nameIdStr);
+
+			    createVariableAccessAttributesResponse(connection, NULL, nameIdStr, invokeId, response);
+
+			    GLOBAL_FREEMEM(nameIdStr);
+			}
+#endif /* (CONFIG_MMS_SUPPORT_VMD_SCOPE_NAMED_VARIABLES == 1) */
 			else {
 				if (DEBUG_MMS_SERVER) printf("GetVariableAccessAttributesRequest with name other than domainspecific is not supported!\n");
 				retVal = -1;

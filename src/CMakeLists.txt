@@ -1,16 +1,14 @@
 
 set (lib_common_SRCS
 ./common/string_map.c
-./common/array_list.c
 ./common/map.c
 ./common/linked_list.c
 ./common/byte_buffer.c
 ./common/string_utilities.c
 ./common/buffer_chain.c
 ./common/conversions.c
+./common/mem_alloc_linked_list.c
 ./common/simple_allocator.c
-./hal/hal.c
-./common/byte_stream.c
 ./mms/iso_server/iso_connection.c
 ./mms/iso_server/iso_server.c
 ./mms/iso_acse/acse.c
@@ -28,6 +26,7 @@ set (lib_common_SRCS
 ./mms/iso_mms/client/mms_client_get_var_access.c
 ./mms/iso_mms/client/mms_client_common.c
 ./mms/iso_mms/client/mms_client_read.c
+./mms/iso_mms/client/mms_client_journals.c
 ./mms/iso_mms/server/mms_read_service.c
 ./mms/iso_mms/server/mms_file_service.c
 ./mms/iso_mms/server/mms_association_service.c
@@ -43,6 +42,8 @@ set (lib_common_SRCS
 ./mms/iso_mms/server/mms_domain.c
 ./mms/iso_mms/server/mms_device.c
 ./mms/iso_mms/server/mms_information_report.c
+./mms/iso_mms/server/mms_journal.c
+./mms/iso_mms/server/mms_journal_service.c
 ./mms/iso_mms/server/mms_server_connection.c
 ./mms/iso_mms/server/mms_write_service.c
 ./mms/iso_mms/server/mms_get_var_access_service.c
@@ -52,24 +53,30 @@ set (lib_common_SRCS
 ./mms/asn1/asn1_ber_primitive_value.c
 ./mms/asn1/ber_encoder.c
 ./mms/asn1/ber_integer.c
-./mms/iso_client/impl/iso_client_connection.c
+./mms/iso_client/iso_client_connection.c
 ./mms/iso_common/iso_connection_parameters.c
 ./mms/iso_session/iso_session.c
-./iedclient/impl/client_control.c
-./iedclient/impl/client_report_control.c
-./iedclient/impl/client_report.c
-./iedclient/impl/ied_connection.c
-./iedcommon/iec61850_common.c
-./iedserver/impl/ied_server.c
-./iedserver/impl/client_connection.c
-./iedserver/model/model.c
-./iedserver/model/dynamic_model.c
-./iedserver/model/cdc.c
-./iedserver/model/config_file_parser.c
-./iedserver/mms_mapping/control.c
-./iedserver/mms_mapping/mms_mapping.c
-./iedserver/mms_mapping/reporting.c
-./iedserver/mms_mapping/mms_goose.c	
+./iec61850/client/client_control.c
+./iec61850/client/client_report_control.c
+./iec61850/client/client_goose_control.c
+./iec61850/client/client_sv_control.c
+./iec61850/client/client_report.c
+./iec61850/client/ied_connection.c
+./iec61850/common/iec61850_common.c
+./iec61850/server/impl/ied_server.c
+./iec61850/server/impl/ied_server_config.c
+./iec61850/server/impl/client_connection.c
+./iec61850/server/model/model.c
+./iec61850/server/model/dynamic_model.c
+./iec61850/server/model/cdc.c
+./iec61850/server/model/config_file_parser.c
+./iec61850/server/mms_mapping/control.c
+./iec61850/server/mms_mapping/mms_mapping.c
+./iec61850/server/mms_mapping/reporting.c
+./iec61850/server/mms_mapping/mms_goose.c
+./iec61850/server/mms_mapping/mms_sv.c
+./iec61850/server/mms_mapping/logging.c
+./logging/log_storage.c
 )
 
 set (lib_asn1c_SRCS
@@ -167,26 +174,27 @@ set (lib_asn1c_SRCS
 
 set (lib_goose_SRCS
 ./goose/goose_subscriber.c
+./goose/goose_receiver.c
 ./goose/goose_publisher.c
 )
 
+set (lib_sv_SRCS
+./sampled_values/sv_subscriber.c
+./sampled_values/sv_publisher.c
+)
+
 set (lib_linux_SRCS
-./hal/socket/linux/socket_linux.c
-./hal/ethernet/linux/ethernet_linux.c
-./hal/thread/linux/thread_linux.c
-./hal/filesystem/linux/file_provider_linux.c
 )
 
 set (lib_windows_SRCS
-./hal/socket/win32/socket_win32.c
-./hal/ethernet/win32/ethernet_win32.c
-./hal/thread/win32/thread_win32.c
-./hal/filesystem/win32/file_provider_win32.c
+)
+
+set (lib_bsd_SRCS
 )
 
 IF(WIN32)
 
-if(EXISTS "../third_party/winpcap/Lib/wpcap.lib")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/winpcap/Lib/wpcap.lib")
 message("Found winpcap -> can compile with GOOSE support")
 set(WITH_WPCAP 1)
 endif()
@@ -194,12 +202,18 @@ endif()
 set_source_files_properties(${lib_asn1c_SRCS}
                                        PROPERTIES LANGUAGE C)
 
+IF(MSVC)
 set_source_files_properties(${lib_common_SRCS} ${lib_windows_SRCS}
                                        PROPERTIES LANGUAGE CXX)
+ENDIF()
 
 IF(WITH_WPCAP)
+IF(MSVC)
 set_source_files_properties(${lib_goose_SRCS}
                                        PROPERTIES LANGUAGE CXX)
+set_source_files_properties(${lib_sv_SRCS}
+                                       PROPERTIES LANGUAGE CXX)                                                                           
+ENDIF()
 ELSE()
 add_definitions(-DEXCLUDE_ETHERNET_WINDOWS)
 ENDIF()
@@ -212,32 +226,70 @@ include_directories(
 
 IF(WITH_WPCAP)
 set (library_SRCS
-	${lib_common_SRCS}
-	${lib_asn1c_SRCS}
-	${lib_goose_SRCS}
+    ${lib_common_SRCS}
+    ${lib_asn1c_SRCS}
+    ${lib_goose_SRCS}
+    ${lib_sv_SRCS}
     ${lib_windows_SRCS}
 )
 
 ELSE()
 set (library_SRCS
-	${lib_common_SRCS}
-	${lib_asn1c_SRCS}
+    ${lib_common_SRCS}
+    ${lib_asn1c_SRCS}
     ${lib_windows_SRCS}
 )
 
 ENDIF(WITH_WPCAP)
 
 ELSEIF(UNIX)
+IF(APPLE)
 set (library_SRCS
-	${lib_common_SRCS}
-	${lib_asn1c_SRCS}
-	${lib_goose_SRCS}
+    ${lib_common_SRCS}
+    ${lib_asn1c_SRCS}
+    ${lib_goose_SRCS}
+    ${lib_sv_SRCS}
+    ${lib_bsd_SRCS}
+)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+set (library_SRCS
+    ${lib_common_SRCS}
+    ${lib_asn1c_SRCS}
+    ${lib_goose_SRCS}
+    ${lib_sv_SRCS}
+    ${lib_bsd_SRCS}
+)
+ELSE()
+set (library_SRCS
+    ${lib_common_SRCS}
+    ${lib_asn1c_SRCS}
+    ${lib_goose_SRCS}
+    ${lib_sv_SRCS}
     ${lib_linux_SRCS}	
 )
+ENDIF(APPLE)
 ENDIF(WIN32)
 
 
 include (GenerateExportHeader)
+
+set(RES_FILES "")
+if ( WIN32 )
+	# Adding RC resource file for adding information to the archive
+	set(RES_FILES "${CMAKE_CURRENT_BINARY_DIR}/version.rc")
+	message(STATUS "Generating RC file : ${RES_FILES}")
+	configure_file(
+			${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
+			${RES_FILES}
+			@ONLY)
+	if( MINGW )
+		set(CMAKE_RC_COMPILER_INIT windres)
+		ENABLE_LANGUAGE(RC)
+		SET(CMAKE_RC_COMPILE_OBJECT
+		"<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+	endif(MINGW)
+	set(library_SRCS ${library_SRCS} ${RES_FILES})
+endif( WIN32 )
 
 add_library (iec61850-shared SHARED ${library_SRCS} )
 
@@ -246,8 +298,9 @@ set_target_properties(iec61850-shared PROPERTIES
            SOVERSION "${LIB_VERSION_MAJOR}.${LIB_VERSION_MINOR}.${LIB_VERSION_PATCH}"
 )
 
-
-
+target_link_libraries(iec61850-shared
+	hal-shared
+)
 
 GENERATE_EXPORT_HEADER(iec61850-shared
 			BASE_NAME iec61850-shared
@@ -258,13 +311,28 @@ GENERATE_EXPORT_HEADER(iec61850-shared
 
 add_library (iec61850 STATIC ${library_SRCS})
 
-IF(UNIX)
-target_link_libraries (iec61850
-    -lpthread
-    -lm
+target_link_libraries(iec61850
+	hal
 )
-ENDIF(UNIX)
 
+IF(UNIX)
+  IF (CONFIG_SYSTEM_HAS_CLOCK_GETTIME)
+     target_link_libraries (iec61850
+         -lpthread
+         -lm
+         -lrt
+     )
+  ELSE ()
+     target_link_libraries (iec61850
+         -lpthread
+         -lm
+     )
+  ENDIF (CONFIG_SYSTEM_HAS_CLOCK_GETTIME)
+ENDIF(UNIX)
+IF(MINGW)
+  target_link_libraries(iec61850-shared ws2_32 iphlpapi)
+  target_link_libraries(iec61850 ws2_32 iphlpapi)
+ENDIF(MINGW)
 iF(WITH_WPCAP)
 target_link_libraries(iec61850
    ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/winpcap/lib/wpcap.lib
@@ -282,7 +350,6 @@ if(MSVC)
        	)
 endif()
 
-
 ELSE(WITH_WPCAP)
 if(MSVC)
 		set_target_properties(iec61850-shared PROPERTIES
@@ -291,9 +358,33 @@ if(MSVC)
 endif()
 ENDIF(WITH_WPCAP)
 
-install (TARGETS iec61850 iec61850-shared
-	RUNTIME DESTINATION bin
-	ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-)
+set(BINDIR "bin")
+set(LIBDIR "lib")
+if(UNIX)
+    # GNUInstallDirs is required for Debian multiarch
+    include(GNUInstallDirs)
+    set(LIBDIR ${CMAKE_INSTALL_LIBDIR})
+    set(BINDIR ${CMAKE_INSTALL_BINDIR})
 
+    configure_file(
+        ${CMAKE_CURRENT_LIST_DIR}/libiec61850.pc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/libiec61850.pc @ONLY
+    )
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libiec61850.pc" DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pkgconfig")
+endif()
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+  configure_file(Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
+
+  configure_file(doxygen/Doxyfile.NET.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.NET @ONLY)
+  add_custom_target(doc-net ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.NET WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
+
+endif(DOXYGEN_FOUND)
+
+install (TARGETS iec61850 iec61850-shared
+	RUNTIME DESTINATION ${BINDIR} COMPONENT Applications
+	ARCHIVE DESTINATION ${LIBDIR} COMPONENT Libraries
+    LIBRARY DESTINATION ${LIBDIR} COMPONENT Libraries
+)

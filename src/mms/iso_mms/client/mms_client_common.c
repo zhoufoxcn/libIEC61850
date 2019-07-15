@@ -20,6 +20,8 @@
  *
  *	See COPYING file for the complete license text.
  */
+
+#include "libiec61850_platform_includes.h"
 #include <MmsPdu.h>
 #include "mms_common.h"
 #include "mms_client_connection.h"
@@ -49,7 +51,7 @@ mmsClient_getInvokeId(ConfirmedResponsePdu_t* confirmedResponse)
 MmsPdu_t*
 mmsClient_createConfirmedRequestPdu(uint32_t invokeId)
 {
-	MmsPdu_t* mmsPdu = (MmsPdu_t*) calloc(1, sizeof(MmsPdu_t));
+	MmsPdu_t* mmsPdu = (MmsPdu_t*) GLOBAL_CALLOC(1, sizeof(MmsPdu_t));
 	mmsPdu->present = MmsPdu_PR_confirmedRequestPdu;
 
 	asn_long2INTEGER(&(mmsPdu->choice.confirmedRequestPdu.invokeID), invokeId);

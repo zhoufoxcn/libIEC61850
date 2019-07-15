@@ -21,6 +21,7 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "conversions.h"
 
 #include <time.h>
@@ -148,7 +149,7 @@ Conversions_msTimeToGeneralizedTime(uint64_t msTime, uint8_t* buffer)
 }
 
 static int
-getSecondsOffset(char* offsetString)
+getSecondsOffset(const char* offsetString)
 {
     int hourOffset = StringUtils_digitsToInt(offsetString, 2);
 
@@ -166,7 +167,7 @@ getSecondsOffset(char* offsetString)
 }
 
 uint64_t
-Conversions_generalizedTimeToMsTime(char* gtString)
+Conversions_generalizedTimeToMsTime(const char* gtString)
 {
     int gtStringLen = strlen(gtString);
 
@@ -205,12 +206,12 @@ Conversions_generalizedTimeToMsTime(char* gtString)
 
     int msOffset = 0;
 
-    char* parsePos = gtString + 14;
+    const char* parsePos = gtString + 14;
 
     /* parse optional fraction of second field */
     if (*(parsePos) == '.') {
         parsePos++;
-        char* fractionOfSecondStart = parsePos;
+        const char* fractionOfSecondStart = parsePos;
 
         int fractionOfSecondLen = 0;
 
@@ -258,7 +259,7 @@ Conversions_generalizedTimeToMsTime(char* gtString)
         return -1;
     }
 
-    uint64_t msTime = t * 1000;
+    uint64_t msTime = (uint64_t) t * 1000LL;
 
     msTime += msOffset;
 
@@ -266,7 +267,7 @@ Conversions_generalizedTimeToMsTime(char* gtString)
 }
 
 void
-memcpyReverseByteOrder(uint8_t* dst, uint8_t* src, int size)
+memcpyReverseByteOrder(uint8_t* dst, const uint8_t* src, int size)
 {
     int i = 0;
     for (i = 0; i < size; i++) {

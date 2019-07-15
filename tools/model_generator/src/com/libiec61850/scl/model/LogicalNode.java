@@ -47,11 +47,12 @@ public class LogicalNode implements DataModelNode {
     private List<DataSet> dataSets;
     private List<ReportControlBlock> reportControlBlocks;
     private List<GSEControl> gseControlBlocks;
+    private List<SampledValueControl> smvControlBlocks;
     private List<LogControl> logControlBlocks;
 	private List<Log> logs;
 	private List<SettingControl> settingGroupControlBlocks;
 	
-    private LogicalDevice parentLogicalDevice;
+	private LogicalDevice parentLogicalDevice;
 
 
     public LogicalNode(Node lnNode, TypeDeclarations typeDeclarations, LogicalDevice parent) throws SclParserException {
@@ -81,6 +82,9 @@ public class LogicalNode implements DataModelNode {
             dataObjects = new LinkedList<DataObject>();
 
             LogicalNodeType type = (LogicalNodeType) sclType;
+            
+            /* mark type as used */
+            type.setUsed(true);
 
             List<DataObjectDefinition> doDefinitions = type.getDataObjectDefinitions();
 
@@ -113,6 +117,13 @@ public class LogicalNode implements DataModelNode {
         for (Node gseControlNode : gseControlNodes)
             gseControlBlocks.add(new GSEControl(gseControlNode));
         
+        /* Parse Sampled Values (SV) control block definitions */
+        smvControlBlocks = new LinkedList<SampledValueControl>();
+
+        List<Node> svControlNodes = ParserUtils.getChildNodesWithTag(lnNode, "SampledValueControl");
+        for (Node svControlNode : svControlNodes)
+            smvControlBlocks.add(new SampledValueControl(svControlNode));
+        
         /* Parse log control block definitions */
         logControlBlocks = new LinkedList<LogControl>();
         
@@ -132,6 +143,9 @@ public class LogicalNode implements DataModelNode {
         settingGroupControlBlocks = new LinkedList<SettingControl>();
         
         List<Node> sgNodes = ParserUtils.getChildNodesWithTag(lnNode, "SettingControl");
+        
+        if ((this.lnClass.equals("LLN0") == false) && (sgNodes.size() > 0))
+        	throw new SclParserException(lnNode, "LN other than LN0 is not allowed to contain SettingControl");
         
         if (sgNodes.size() > 1)
         	throw new SclParserException(lnNode, "LN contains more then one SettingControl");
@@ -257,7 +271,23 @@ public class LogicalNode implements DataModelNode {
     public List<GSEControl> getGSEControlBlocks() {
         return gseControlBlocks;
     }
+    
+    public List<SampledValueControl> getSampledValueControlBlocks() {
+        return smvControlBlocks;
+    }
+    
+    public List<SettingControl> getSettingGroupControlBlocks() {
+		return settingGroupControlBlocks;
+	}
 
+    public List<LogControl> getLogControlBlocks() {
+        return logControlBlocks;
+    }
+    
+    public List<Log> getLogs() {
+        return logs;
+    }
+    
     @Override
     public DataModelNode getChildByName(String childName) {
         for (DataObject dataObject : dataObjects) {

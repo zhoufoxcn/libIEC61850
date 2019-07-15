@@ -21,19 +21,19 @@
  *	See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include <MmsPdu.h>
 #include "stack_config.h"
 #include "mms_common.h"
 #include "mms_client_connection.h"
 #include "byte_buffer.h"
-#include "string_utilities.h"
 #include "mms_client_internal.h"
 
 #include "ber_decode.h"
 
 int
 mmsClient_createMmsGetNameListRequestVMDspecific(long invokeId, ByteBuffer* writeBuffer,
-		char* continueAfter)
+		const char* continueAfter)
 {
 	MmsPdu_t* mmsPdu = mmsClient_createConfirmedRequestPdu(invokeId);
 
@@ -45,8 +45,8 @@ mmsClient_createMmsGetNameListRequestVMDspecific(long invokeId, ByteBuffer* writ
 	request = &(mmsPdu->choice.confirmedRequestPdu.confirmedServiceRequest.choice.getNameList);
 
 	if (continueAfter != NULL) {
-		request->continueAfter = (Identifier_t*) calloc(1, sizeof(Identifier_t));
-		request->continueAfter->buf = (uint8_t*) copyString(continueAfter);
+		request->continueAfter = (Identifier_t*) GLOBAL_CALLOC(1, sizeof(Identifier_t));
+		request->continueAfter->buf = (uint8_t*) StringUtils_copyString(continueAfter);
 		request->continueAfter->size = strlen(continueAfter);
 	}
 	else
@@ -70,7 +70,7 @@ mmsClient_createMmsGetNameListRequestVMDspecific(long invokeId, ByteBuffer* writ
 
 int
 mmsClient_createMmsGetNameListRequestAssociationSpecific(long invokeId, ByteBuffer* writeBuffer,
-		char* continueAfter)
+		const char* continueAfter)
 {
 	MmsPdu_t* mmsPdu = mmsClient_createConfirmedRequestPdu(invokeId);
 
@@ -83,8 +83,8 @@ mmsClient_createMmsGetNameListRequestAssociationSpecific(long invokeId, ByteBuff
 
 
 	if (continueAfter != NULL) {
-		request->continueAfter = (Identifier_t*) calloc(1, sizeof(Identifier_t));
-		request->continueAfter->buf = (uint8_t*) copyString(continueAfter);
+		request->continueAfter = (Identifier_t*) GLOBAL_CALLOC(1, sizeof(Identifier_t));
+		request->continueAfter->buf = (uint8_t*) StringUtils_copyString(continueAfter);
 		request->continueAfter->size = strlen(continueAfter);
 	}
 	else
@@ -166,7 +166,7 @@ mmsClient_parseGetNameListResponse(LinkedList* nameList, ByteBuffer* message, ui
         bufPos = BerDecoder_decodeLength(buffer, &length, bufPos, maxBufPos);
         if (bufPos < 0) goto exit_error;
 
-        char* variableName = createStringFromBuffer(buffer + bufPos, length);
+        char* variableName = StringUtils_createStringFromBuffer(buffer + bufPos, length);
 
         element = LinkedList_insertAfter(element, variableName);
 
@@ -197,8 +197,8 @@ exit_error:
 }
 
 int
-mmsClient_createGetNameListRequestDomainOrVMDSpecific(long invokeId, char* domainName,
-		ByteBuffer* writeBuffer, MmsObjectClass objectClass, char* continueAfter)
+mmsClient_createGetNameListRequestDomainOrVMDSpecific(long invokeId, const char* domainName,
+		ByteBuffer* writeBuffer, MmsObjectClass objectClass, const char* continueAfter)
 {
 	MmsPdu_t* mmsPdu = mmsClient_createConfirmedRequestPdu(invokeId);
 
@@ -210,8 +210,8 @@ mmsClient_createGetNameListRequestDomainOrVMDSpecific(long invokeId, char* domai
 	request = &(mmsPdu->choice.confirmedRequestPdu.confirmedServiceRequest.choice.getNameList);
 
 	if (continueAfter != NULL) {
-		request->continueAfter = (Identifier_t*) calloc(1, sizeof(Identifier_t));
-		request->continueAfter->buf = (uint8_t*) copyString(continueAfter);
+		request->continueAfter = (Identifier_t*) GLOBAL_CALLOC(1, sizeof(Identifier_t));
+		request->continueAfter->buf = (uint8_t*) StringUtils_copyString(continueAfter);
 		request->continueAfter->size = strlen(continueAfter);
 	}
 	else
@@ -229,12 +229,7 @@ mmsClient_createGetNameListRequestDomainOrVMDSpecific(long invokeId, char* domai
 
 	request->objectClass.present = ObjectClass_PR_basicObjectClass;
 
-	if (objectClass == MMS_NAMED_VARIABLE)
-		asn_long2INTEGER(&request->objectClass.choice.basicObjectClass,
-				ObjectClass__basicObjectClass_namedVariable);
-	else if (objectClass == MMS_NAMED_VARIABLE_LIST)
-		asn_long2INTEGER(&request->objectClass.choice.basicObjectClass,
-				ObjectClass__basicObjectClass_namedVariableList);
+	asn_long2INTEGER(&request->objectClass.choice.basicObjectClass, objectClass);
 
 	asn_enc_rval_t rval;
 

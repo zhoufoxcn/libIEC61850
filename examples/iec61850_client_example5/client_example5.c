@@ -11,11 +11,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "thread.h"
+#include "hal_thread.h"
 
 
-int main(int argc, char** argv) {
-
+int
+main(int argc, char** argv)
+{
     char* hostname;
     int tcpPort = 102;
 
@@ -46,20 +47,26 @@ int main(int argc, char** argv) {
     /* use this to skip AP-Title completely - this may be required by some "obscure" servers */
 //    IsoConnectionParameters_setRemoteApTitle(parameters, NULL, 0);
 //    IsoConnectionParameters_setLocalApTitle(parameters, NULL, 0);
+    TSelector localTSelector = { 3, { 0x00, 0x01, 0x02 } };
+    TSelector remoteTSelector = { 2, { 0x00, 0x01 } };
+
+    SSelector sSelector1 = { 2, { 0, 1 } };
+    SSelector sSelector2 = { 5, { 0, 1, 2, 3, 4 } };
 
     /* change parameters for presentation, session and transport layers */
-    IsoConnectionParameters_setRemoteAddresses(parameters, 0x12345678, 12 , 13);
-    IsoConnectionParameters_setLocalAddresses(parameters, 0x87654321, 1234 , 2345);
+    IsoConnectionParameters_setRemoteAddresses(parameters, 0x12345678, sSelector1, localTSelector);
+    IsoConnectionParameters_setLocalAddresses(parameters, 0x87654321, sSelector2, remoteTSelector);
 
     char* password = "top secret";
 
     /* use authentication */
-    AcseAuthenticationParameter auth = (AcseAuthenticationParameter) calloc(1, sizeof(struct sAcseAuthenticationParameter));
-    auth->mechanism = AUTH_PASSWORD;
-    auth->value.password.octetString = (uint8_t*) password;
-    auth->value.password.passwordLength = strlen(password);
+    AcseAuthenticationParameter auth = AcseAuthenticationParameter_create();
+    AcseAuthenticationParameter_setAuthMechanism(auth, ACSE_AUTH_PASSWORD);
+    AcseAuthenticationParameter_setPassword(auth, password);
 
     IsoConnectionParameters_setAcseAuthenticationParameter(parameters, auth);
+
+    IedConnection_setConnectTimeout(con, 10000);
 
     /* call connect when all parameters are set */
     IedConnection_connect(con, &error, hostname, tcpPort);
@@ -75,6 +82,8 @@ int main(int argc, char** argv) {
     }
 
     IedConnection_destroy(con);
+
+    AcseAuthenticationParameter_destroy(auth);
 }
 
 

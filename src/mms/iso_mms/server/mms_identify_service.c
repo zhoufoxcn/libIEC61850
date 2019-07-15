@@ -21,14 +21,15 @@
  *  See COPYING file for the complete license text.
  */
 
+#include "libiec61850_platform_includes.h"
 #include "mms_server_internal.h"
 
 #if MMS_IDENTIFY_SERVICE == 1
 
 void
 mmsServer_handleIdentifyRequest(
-        MmsServerConnection* connection,
-        int invokeId,
+        MmsServerConnection connection,
+        uint32_t invokeId,
         ByteBuffer* response)
 {
     int bufPos = 0;
